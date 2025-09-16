@@ -24,7 +24,6 @@ public record AudienciaDTO(
         String tipo,
         String situacao,
         Prioridade prioridade
-
 ) {
 
 }

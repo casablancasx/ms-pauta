@@ -10,6 +10,7 @@ import org.springframework.stereotype.Component;
 import static br.gov.agu.nutec.mspauta.enums.Status.FINALIZADO;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Queue;
 import java.util.concurrent.ConcurrentLinkedQueue;
@@ -35,7 +36,7 @@ public class AudienciaPendenteListener {
 
 
     private void processarBuffer() {
-        List<AudienciaDTO> audiencias = new ArrayList<>();
+        HashSet<AudienciaDTO> audiencias = new HashSet<>();
         buffer.forEach(msg -> audiencias.add(msg.audiencia()));
 
         try {
