@@ -9,9 +9,7 @@ import org.springframework.stereotype.Component;
 
 import static br.gov.agu.nutec.mspauta.enums.Status.FINALIZADO;
 
-import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Queue;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
@@ -25,7 +23,7 @@ public class AudienciaPendenteListener {
     private final Queue<AudienciaMessage> buffer = new ConcurrentLinkedQueue<>();
 
 
-    @RabbitListener(queues = "${rabbitmq.queue.sollux-ms-pauta}")
+    @RabbitListener(queues = "${rabbitmq.queue.sollux-ms-pauta}", concurrency = "1")
     public void audienciaPendente(AudienciaMessage audienciaMessage) {
         buffer.add(audienciaMessage);
 

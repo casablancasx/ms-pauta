@@ -18,7 +18,8 @@ public class AdvogadoEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    @Column(name = "advogado_id", nullable = false)
+    private Long advogadoId;
 
     private String nome;
 
