@@ -5,46 +5,112 @@ import br.gov.agu.nutec.mspauta.dto.PautaDTO;
 import br.gov.agu.nutec.mspauta.entity.*;
 import br.gov.agu.nutec.mspauta.repository.*;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class PautaService {
+
     private final OrgaoJulgadorRepository orgaoJulgadorRepository;
     private final PautaRepository pautaRepository;
     private final AudienciaRepository audienciaRepository;
     private final SalaRepository salaRepository;
     private final AdvogadoRepository advogadoRepository;
 
-    public void criarPautas(HashSet<AudienciaDTO> audiencias) {
-        Map<PautaDTO, List<AudienciaDTO>> audienciasAgrupadas = agruparAudienciasPorPauta(audiencias);
-        salvarDados(audienciasAgrupadas);
-    }
+    @Transactional
+    public void criarPautas(Set<AudienciaDTO> audiencias) {
 
-    private void salvarDados(Map<PautaDTO, List<AudienciaDTO>> audienciasAgrupdas) {
-        for (Map.Entry<PautaDTO, List<AudienciaDTO>> entry : audienciasAgrupdas.entrySet()) {
+        Map<PautaDTO, List<AudienciaDTO>> agrupadas = agruparAudienciasPorPauta(audiencias);
 
-            var orgaoJulgador = orgaoJulgadorRepository.findByNome(entry.getKey().orgaoJulgador()).orElseGet(() -> orgaoJulgadorRepository.save(new OrgaoJulgadorEntity(null, entry.getKey().orgaoJulgador(), List.of(), List.of())));
+        for (var entry : agrupadas.entrySet()) {
+            PautaDTO chave = entry.getKey();
 
-            var sala = salaRepository.findByNome(entry.getKey().sala()).orElseGet(() -> salaRepository.save(new SalaEntity(null, entry.getKey().sala(), orgaoJulgador, List.of())));
+            List<AudienciaDTO> listaAudiencias = entry.getValue();
 
-            var pauta = pautaRepository.save(new PautaEntity(null, entry.getKey().data(), entry.getKey().turno().getDescricao(), orgaoJulgador, sala, List.of()));
+            OrgaoJulgadorEntity orgaoJulgador = buscarOuCriarOrgaoJulgador(chave.orgaoJulgador());
 
-            var audiencias = entry.getValue().stream().map(a -> {
-                List<AdvogadoEntity> advogados = a.advogados().stream().map(advogadoNome -> advogadoRepository.findByNome(advogadoNome).orElseGet(() -> advogadoRepository.save(new AdvogadoEntity(null, advogadoNome, List.of())))).collect(Collectors.toList());
-                return new AudienciaEntity(null, a.cnj(), a.classeJudicial(), a.assunto(), a.poloAtivo(), advogados, a.prioridade().name(), pauta);
-            }).toList();
+            SalaEntity sala = buscarOuCriarSala(chave.sala(), orgaoJulgador);
 
-            audienciaRepository.saveAll(audiencias);
+            PautaEntity pauta = pautaRepository.save(
+                    new PautaEntity(
+                            null,
+                            chave.data(),
+                            chave.turno().name(),
+                            orgaoJulgador,
+                            sala,
+                            new ArrayList<>()
+                    )
+            );
+
+            List<AudienciaEntity> entidadesAudiencia = criarAudiencias(listaAudiencias, pauta);
+
+            audienciaRepository.saveAll(entidadesAudiencia);
         }
     }
 
-    private Map<PautaDTO, List<AudienciaDTO>> agruparAudienciasPorPauta(HashSet<AudienciaDTO> audiencias) {
-        return audiencias.stream().collect(Collectors.groupingBy(a -> new PautaDTO(a.data(), a.orgaoJulgador(), a.sala(), a.turno())));
+    private OrgaoJulgadorEntity buscarOuCriarOrgaoJulgador(String nome) {
+        return orgaoJulgadorRepository.findByNome(nome)
+                .orElseGet(() -> orgaoJulgadorRepository.save(
+                        new OrgaoJulgadorEntity(null, nome, new ArrayList<>(), new ArrayList<>()))
+                );
+    }
+
+    private SalaEntity buscarOuCriarSala(String nome, OrgaoJulgadorEntity orgaoJulgador) {
+        return salaRepository.findByNome(nome)
+                .orElseGet(() -> salaRepository.save(
+                        new SalaEntity(null, nome, orgaoJulgador, new ArrayList<>()))
+                );
+    }
+
+    private List<AudienciaEntity> criarAudiencias(List<AudienciaDTO> audiencias, PautaEntity pauta) {
+        Set<String> nomesAdvogados = audiencias.stream()
+                .flatMap(a -> a.advogados().stream())
+                .collect(Collectors.toSet());
+
+        Map<String, AdvogadoEntity> advogadosExistentes = advogadoRepository.findAllByNomeIn(nomesAdvogados)
+                .stream()
+                .collect(Collectors.toMap(AdvogadoEntity::getNome, a -> a));
+
+        List<AdvogadoEntity> novosAdvogados = nomesAdvogados.stream()
+                .filter(nome -> !advogadosExistentes.containsKey(nome))
+                .map(nome -> new AdvogadoEntity(null, nome, new ArrayList<>()))
+                .toList();
+
+        if (!novosAdvogados.isEmpty()) {
+            advogadoRepository.saveAll(novosAdvogados);
+            novosAdvogados.forEach(a -> advogadosExistentes.put(a.getNome(), a));
+        }
+
+        return audiencias.stream()
+                .map(a -> {
+                    List<AdvogadoEntity> advogados = a.advogados().stream()
+                            .map(advogadosExistentes::get)
+                            .toList();
+
+                    return new AudienciaEntity(
+                            null,
+                            a.cnj(),
+                            a.classeJudicial(),
+                            a.assunto(),
+                            a.poloAtivo(),
+                            advogados,
+                            a.prioridade().name(),
+                            pauta
+                    );
+                })
+                .toList();
+    }
+
+    private Map<PautaDTO, List<AudienciaDTO>> agruparAudienciasPorPauta(Set<AudienciaDTO> audiencias) {
+        return audiencias.stream()
+                .collect(Collectors.groupingBy(
+                        a -> new PautaDTO(a.data(), a.orgaoJulgador(), a.sala(), a.turno())
+                ));
     }
 }
