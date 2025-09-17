@@ -35,9 +35,31 @@ public class PautistaEntity extends EntidadeSapiens {
     @OneToMany(mappedBy = "pautista", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<AfastamentoEntity> afastamentos = new ArrayList<>();
 
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(
+        name = "tb_pautista_preferencias_orgaos",
+        joinColumns = @JoinColumn(name = "pautista_id"),
+        inverseJoinColumns = @JoinColumn(name = "orgao_julgador_id")
+    )
+    private List<OrgaoJulgadorEntity> preferenciasOrgaosJulgadores = new ArrayList<>();
+
     public double calcularCargaTrabalho() {
         final int PESO_PAUTA = 1;
         final int PESO_AUDIENCIA = 2;
         return (quantidadePautas * PESO_PAUTA) + (quantiadeAudiencias * PESO_AUDIENCIA);
+    }
+
+    public void adicionarPreferenciaOrgaoJulgador(OrgaoJulgadorEntity orgaoJulgador) {
+        if (!preferenciasOrgaosJulgadores.contains(orgaoJulgador)) {
+            preferenciasOrgaosJulgadores.add(orgaoJulgador);
+        }
+    }
+
+    public void removerPreferenciaOrgaoJulgador(OrgaoJulgadorEntity orgaoJulgador) {
+        preferenciasOrgaosJulgadores.remove(orgaoJulgador);
+    }
+
+    public boolean temPreferenciaPorOrgaoJulgador(OrgaoJulgadorEntity orgaoJulgador) {
+        return preferenciasOrgaosJulgadores.contains(orgaoJulgador);
     }
 }
