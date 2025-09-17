@@ -34,4 +34,10 @@ public class PautistaEntity extends EntidadeSapiens {
 
     @OneToMany(mappedBy = "pautista", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<AfastamentoEntity> afastamentos = new ArrayList<>();
+
+    public double calcularCargaTrabalho() {
+        final int PESO_PAUTA = 1;
+        final int PESO_AUDIENCIA = 2;
+        return (quantidadePautas * PESO_PAUTA) + (quantiadeAudiencias * PESO_AUDIENCIA);
+    }
 }
