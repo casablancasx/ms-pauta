@@ -22,6 +22,10 @@ public class PautistaEntity extends EntidadeSapiens {
     @Column(name = "pautista_id")
     private Integer pautistaId;
 
+    private Integer quantidadePautas;
+
+    private Integer quantiadeAudiencias;
+
     private boolean disponivel;
 
     @ManyToOne(fetch = FetchType.LAZY)

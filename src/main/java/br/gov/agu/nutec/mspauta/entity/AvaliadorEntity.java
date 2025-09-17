@@ -23,6 +23,10 @@ public class AvaliadorEntity {
 
     private boolean disponivel;
 
+    private Integer quantidadePautas;
+
+    private Integer quantiadeAudiencias;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "adicionado_por_id")
     private UsuarioEntity adicionadoPor;

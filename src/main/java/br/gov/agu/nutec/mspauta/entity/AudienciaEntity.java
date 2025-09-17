@@ -42,5 +42,7 @@ public class AudienciaEntity {
     @JoinColumn(name = "pauta_id")
     private PautaEntity pauta;
 
-    private boolean cadastrada;
+    private boolean cadastradaAvaliador;
+
+    private boolean cadastradaPautista;
 }
