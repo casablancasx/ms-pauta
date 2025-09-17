@@ -101,7 +101,8 @@ public class PautaService {
                             a.poloAtivo(),
                             advogados,
                             a.prioridade().name(),
-                            pauta
+                            pauta,
+                            false
                     );
                 })
                 .toList();

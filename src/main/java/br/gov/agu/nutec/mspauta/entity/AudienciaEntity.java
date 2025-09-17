@@ -36,9 +36,11 @@ public class AudienciaEntity {
     )
     private List<AdvogadoEntity> advogados;
 
-    private String prioridade   ;
+    private String prioridade;
 
     @ManyToOne
     @JoinColumn(name = "pauta_id")
     private PautaEntity pauta;
+
+    private boolean cadastrada;
 }
