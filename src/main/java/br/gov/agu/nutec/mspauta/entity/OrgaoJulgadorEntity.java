@@ -23,10 +23,13 @@ public class OrgaoJulgadorEntity {
 
     private String nome;
 
+    @ManyToOne
+    @JoinColumn(name = "uf_id")
+    private UfEntity uf;
+
     @OneToMany(mappedBy = "orgaoJulgador")
     private List<PautaEntity> pautas;
 
     @OneToMany(mappedBy = "orgaoJulgador")
     private List<SalaEntity> salas;
-
 }

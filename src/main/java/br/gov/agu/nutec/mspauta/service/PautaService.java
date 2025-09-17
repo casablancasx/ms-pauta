@@ -3,6 +3,7 @@ package br.gov.agu.nutec.mspauta.service;
 import br.gov.agu.nutec.mspauta.dto.AudienciaDTO;
 import br.gov.agu.nutec.mspauta.dto.PautaDTO;
 import br.gov.agu.nutec.mspauta.entity.*;
+import br.gov.agu.nutec.mspauta.enums.Uf;
 import br.gov.agu.nutec.mspauta.repository.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -20,6 +21,7 @@ public class PautaService {
     private final OrgaoJulgadorRepository orgaoJulgadorRepository;
     private final PautaRepository pautaRepository;
     private final AudienciaRepository audienciaRepository;
+    private final UfRepostiory ufRepostiory;
     private final SalaRepository salaRepository;
     private final AdvogadoRepository advogadoRepository;
 
@@ -33,7 +35,9 @@ public class PautaService {
 
             List<AudienciaDTO> listaAudiencias = entry.getValue();
 
-            OrgaoJulgadorEntity orgaoJulgador = buscarOuCriarOrgaoJulgador(chave.orgaoJulgador());
+            UfEntity uf = buscarOuCriarUf(chave.uf());
+
+            OrgaoJulgadorEntity orgaoJulgador = buscarOuCriarOrgaoJulgador(chave.orgaoJulgador(), uf);
 
             SalaEntity sala = buscarOuCriarSala(chave.sala(), orgaoJulgador);
 
@@ -54,10 +58,15 @@ public class PautaService {
         }
     }
 
-    private OrgaoJulgadorEntity buscarOuCriarOrgaoJulgador(String nome) {
+    private UfEntity buscarOuCriarUf(Uf sigla) {
+        return ufRepostiory.findBySigla(sigla)
+                .orElseGet(() -> ufRepostiory.save(new UfEntity(null, sigla, new ArrayList<>())));
+    }
+
+    private OrgaoJulgadorEntity buscarOuCriarOrgaoJulgador(String nome, UfEntity uf) {
         return orgaoJulgadorRepository.findByNome(nome)
                 .orElseGet(() -> orgaoJulgadorRepository.save(
-                        new OrgaoJulgadorEntity(null, nome, new ArrayList<>(), new ArrayList<>()))
+                        new OrgaoJulgadorEntity(null, nome, uf,new ArrayList<>(), new ArrayList<>()))
                 );
     }
 
@@ -102,6 +111,7 @@ public class PautaService {
                             advogados,
                             a.prioridade().name(),
                             pauta,
+                            false,
                             false
                     );
                 })
@@ -111,7 +121,7 @@ public class PautaService {
     private Map<PautaDTO, List<AudienciaDTO>> agruparAudienciasPorPauta(Set<AudienciaDTO> audiencias) {
         return audiencias.stream()
                 .collect(Collectors.groupingBy(
-                        a -> new PautaDTO(a.data(), a.orgaoJulgador(), a.sala(), a.turno())
+                        a -> new PautaDTO(a.data(), a.orgaoJulgador(), a.sala(), a.turno(),a.uf())
                 ));
     }
 }
