@@ -26,8 +26,6 @@ public class UsuarioEntity extends EntidadeSapiens {
     @Enumerated(EnumType.STRING)
     private Role role;
 
-    @OneToMany(mappedBy = "adicionadoPor")
-    private List<UsuarioEntity> usuariosAdicionados;
 
     @OneToMany(mappedBy = "adicionadoPor")
     private List<PautistaEntity> pautistasAdicionados;

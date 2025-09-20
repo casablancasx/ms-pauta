@@ -1,6 +1,7 @@
 package br.gov.agu.nutec.mspauta.entity;
 
 
+import br.gov.agu.nutec.mspauta.enums.StatusAnaliseComparecimento;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -25,6 +26,10 @@ public class PautaEntity {
     private LocalDate data;
 
     private String turno;
+
+    @Column(name = "status_analise_comparecimento")
+    @Enumerated(EnumType.STRING)
+    private StatusAnaliseComparecimento statusAnaliseComparecimento;
 
     @ManyToOne
     @JoinColumn(name = "orgao_julgador_id")

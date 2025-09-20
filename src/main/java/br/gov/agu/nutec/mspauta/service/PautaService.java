@@ -5,6 +5,8 @@ import br.gov.agu.nutec.mspauta.dto.PautaDTO;
 import br.gov.agu.nutec.mspauta.entity.*;
 import br.gov.agu.nutec.mspauta.enums.Uf;
 import br.gov.agu.nutec.mspauta.repository.*;
+import static br.gov.agu.nutec.mspauta.enums.StatusCadastro.PENDENTE;
+import static br.gov.agu.nutec.mspauta.enums.StatusAnaliseComparecimento.ANALISE_PENDENTE;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -46,6 +48,7 @@ public class PautaService {
                             null,
                             chave.data(),
                             chave.turno().name(),
+                            ANALISE_PENDENTE,
                             orgaoJulgador,
                             sala,
                             new ArrayList<>()
@@ -88,7 +91,7 @@ public class PautaService {
 
         List<AdvogadoEntity> novosAdvogados = nomesAdvogados.stream()
                 .filter(nome -> !advogadosExistentes.containsKey(nome))
-                .map(nome -> new AdvogadoEntity(null, nome, new ArrayList<>()))
+                .map(nome -> new AdvogadoEntity(null, nome, false, new ArrayList<>()))
                 .toList();
 
         if (!novosAdvogados.isEmpty()) {
@@ -108,11 +111,12 @@ public class PautaService {
                             a.classeJudicial(),
                             a.assunto(),
                             a.poloAtivo(),
+                            a.hora(),
                             advogados,
-                            a.prioridade().name(),
+                            a.prioridade(),
                             pauta,
-                            false,
-                            false
+                            PENDENTE,
+                            PENDENTE
                     );
                 })
                 .toList();

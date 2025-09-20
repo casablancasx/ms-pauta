@@ -1,5 +1,7 @@
 package br.gov.agu.nutec.mspauta.entity;
 
+import br.gov.agu.nutec.mspauta.enums.Prioridade;
+import br.gov.agu.nutec.mspauta.enums.StatusCadastro;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -28,6 +30,8 @@ public class AudienciaEntity {
 
     private String nomeParte;
 
+    private String horario;
+
     @ManyToMany
     @JoinTable(
             name = "tb_audiencia_advogado",
@@ -36,13 +40,19 @@ public class AudienciaEntity {
     )
     private List<AdvogadoEntity> advogados;
 
-    private String prioridade;
+    @Enumerated(EnumType.STRING)
+    private Prioridade prioridade;
 
     @ManyToOne
     @JoinColumn(name = "pauta_id")
     private PautaEntity pauta;
 
-    private boolean cadastradaAvaliador;
+    @Enumerated(EnumType.STRING)
+    @Column(name = "status_cadastro_avaliador")
+    private StatusCadastro statusCadastroAvaliador;
 
-    private boolean cadastradaPautista;
+    @Enumerated(EnumType.STRING)
+    @Column(name = "status_cadastro_pautista")
+    private StatusCadastro statusCadastroPautista;
+
 }

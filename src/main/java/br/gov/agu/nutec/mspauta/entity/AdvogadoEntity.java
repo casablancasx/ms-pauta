@@ -17,11 +17,15 @@ import java.util.List;
 public class AdvogadoEntity {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "advogado_seq")
+    @SequenceGenerator(name = "advogado_seq", sequenceName = "tb_advogados_advogado_id_seq", allocationSize = 1)
     @Column(name = "advogado_id", nullable = false)
     private Long advogadoId;
 
     private String nome;
+
+    @Column(name = "is_suspeito")
+    private boolean isSuspeito;
 
     @ManyToMany(mappedBy = "advogados")
     private List<AudienciaEntity> audiencias;
