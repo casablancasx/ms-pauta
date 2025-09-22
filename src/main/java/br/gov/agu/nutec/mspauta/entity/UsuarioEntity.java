@@ -8,8 +8,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.util.List;
-
 @Entity
 @Table(name = "tb_usuarios")
 @Getter
@@ -25,11 +23,4 @@ public class UsuarioEntity extends EntidadeSapiens {
 
     @Enumerated(EnumType.STRING)
     private Role role;
-
-
-    @OneToMany(mappedBy = "adicionadoPor")
-    private List<PautistaEntity> pautistasAdicionados;
-
-    @OneToMany(mappedBy = "adicionadoPor")
-    private List<AvaliadorEntity> avaliadoresAdicionados;
 }

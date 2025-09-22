@@ -1,0 +1,36 @@
+package br.gov.agu.nutec.mspauta.controller;
+
+import br.gov.agu.nutec.mspauta.dto.response.PautaResponseDTO;
+import br.gov.agu.nutec.mspauta.dto.PageResponse;
+import br.gov.agu.nutec.mspauta.service.PautaService;
+import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
+
+@RestController
+@RequestMapping("/pautas")
+@RequiredArgsConstructor
+public class PautaController {
+
+
+    private final PautaService pautaService;
+
+
+
+    @GetMapping
+    public ResponseEntity<PageResponse<PautaResponseDTO>> listarPautas(
+            @RequestParam int page,
+            @RequestParam int size,
+            @RequestParam String statusAnalise,
+            @RequestParam String uf,
+            @RequestParam String orgaoJulgador,
+            @RequestParam String sala
+    ){
+
+        var response = pautaService.listarPautas(page, size, statusAnalise, uf, orgaoJulgador, sala);
+        return ResponseEntity.ok(response);
+    }
+}
