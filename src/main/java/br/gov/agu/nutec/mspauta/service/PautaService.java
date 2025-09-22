@@ -6,6 +6,7 @@ import br.gov.agu.nutec.mspauta.entity.*;
 import br.gov.agu.nutec.mspauta.enums.Uf;
 import br.gov.agu.nutec.mspauta.repository.*;
 import static br.gov.agu.nutec.mspauta.enums.StatusCadastro.PENDENTE;
+import static br.gov.agu.nutec.mspauta.enums.StatusEscalaPauta.ESCALA_PENDENTE;
 import static br.gov.agu.nutec.mspauta.enums.StatusAnaliseComparecimento.ANALISE_PENDENTE;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -47,7 +48,9 @@ public class PautaService {
                     new PautaEntity(
                             null,
                             chave.data(),
-                            chave.turno().name(),
+                            chave.turno(),
+                            ESCALA_PENDENTE,
+                            ESCALA_PENDENTE,
                             ANALISE_PENDENTE,
                             orgaoJulgador,
                             sala,

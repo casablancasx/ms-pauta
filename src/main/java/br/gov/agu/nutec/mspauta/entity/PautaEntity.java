@@ -2,6 +2,8 @@ package br.gov.agu.nutec.mspauta.entity;
 
 
 import br.gov.agu.nutec.mspauta.enums.StatusAnaliseComparecimento;
+import br.gov.agu.nutec.mspauta.enums.StatusEscalaPauta;
+import br.gov.agu.nutec.mspauta.enums.Turno;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -25,7 +27,16 @@ public class PautaEntity {
 
     private LocalDate data;
 
-    private String turno;
+    @Enumerated(EnumType.STRING)
+    private Turno turno;
+
+    @Column(name = "status_escala_avaliador")
+    @Enumerated(EnumType.STRING)
+    private StatusEscalaPauta statusEscalaAvaliador;
+
+    @Column(name = "status_escala_pautista")
+    @Enumerated(EnumType.STRING)
+    private StatusEscalaPauta statusEscalaPautista;
 
     @Column(name = "status_analise_comparecimento")
     @Enumerated(EnumType.STRING)
