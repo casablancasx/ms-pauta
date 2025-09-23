@@ -26,7 +26,7 @@ public class PautaResponseDTO {
 
     private String turno;
 
-    private String analiseComparecimento;
+    private String respostaAnalise;
 
     private List<AudienciaResponseDTO> audiencias;
 

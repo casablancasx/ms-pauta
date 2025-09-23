@@ -27,4 +27,8 @@ public class AudienciaResponseDTO {
 
     private String prioridade;
 
+    private String resultadoAnalise;
+
+    private String observacao;
+
 }
