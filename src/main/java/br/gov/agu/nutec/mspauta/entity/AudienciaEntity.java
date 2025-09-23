@@ -1,6 +1,7 @@
 package br.gov.agu.nutec.mspauta.entity;
 
 import br.gov.agu.nutec.mspauta.enums.Prioridade;
+import br.gov.agu.nutec.mspauta.enums.StatusAnalise;
 import br.gov.agu.nutec.mspauta.enums.StatusCadastro;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -54,5 +55,8 @@ public class AudienciaEntity {
     @Enumerated(EnumType.STRING)
     @Column(name = "status_cadastro_pautista")
     private StatusCadastro statusCadastroPautista;
+
+
+    private StatusAnalise resultadoAnalise;
 
 }

@@ -24,13 +24,13 @@ public class PautaController {
     public ResponseEntity<PageResponse<PautaResponseDTO>> listarPautas(
             @RequestParam int page,
             @RequestParam int size,
-            @RequestParam String statusAnalise,
+            @RequestParam String resultadoAnalise,
             @RequestParam String uf,
             @RequestParam String orgaoJulgador,
             @RequestParam String sala
     ){
 
-        var response = pautaService.listarPautas(page, size, statusAnalise, uf, orgaoJulgador, sala);
+        var response = pautaService.listarPautas(page, size, resultadoAnalise, uf, orgaoJulgador, sala);
         return ResponseEntity.ok(response);
     }
 }

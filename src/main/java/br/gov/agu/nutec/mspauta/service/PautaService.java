@@ -21,8 +21,8 @@ import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-import static br.gov.agu.nutec.mspauta.enums.StatusAnaliseComparecimento.ANALISE_PENDENTE;
-import static br.gov.agu.nutec.mspauta.enums.StatusCadastro.PENDENTE;
+import static br.gov.agu.nutec.mspauta.enums.StatusAnalise.ANALISE_PENDENTE;
+import static br.gov.agu.nutec.mspauta.enums.StatusCadastro.CADASTRO_PENDETE;
 import static br.gov.agu.nutec.mspauta.enums.StatusEscalaPauta.ESCALA_PENDENTE;
 
 @Slf4j
@@ -37,8 +37,6 @@ public class PautaService {
     private final SalaRepository salaRepository;
     private final AdvogadoRepository advogadoRepository;
     private final PautaMapper pautaMapper;
-
-
 
 
     @Transactional
@@ -85,7 +83,7 @@ public class PautaService {
     private OrgaoJulgadorEntity buscarOuCriarOrgaoJulgador(String nome, UfEntity uf) {
         return orgaoJulgadorRepository.findByNome(nome)
                 .orElseGet(() -> orgaoJulgadorRepository.save(
-                        new OrgaoJulgadorEntity(null, nome, uf,new ArrayList<>(), new ArrayList<>()))
+                        new OrgaoJulgadorEntity(null, nome, uf, new ArrayList<>(), new ArrayList<>()))
                 );
     }
 
@@ -131,8 +129,9 @@ public class PautaService {
                             advogados,
                             a.prioridade(),
                             pauta,
-                            PENDENTE,
-                            PENDENTE
+                            CADASTRO_PENDETE,
+                            CADASTRO_PENDETE,
+                            ANALISE_PENDENTE
                     );
                 })
                 .toList();
@@ -141,7 +140,7 @@ public class PautaService {
     private Map<PautaDTO, List<AudienciaDTO>> agruparAudienciasPorPauta(Set<AudienciaDTO> audiencias) {
         return audiencias.stream()
                 .collect(Collectors.groupingBy(
-                        a -> new PautaDTO(a.data(), a.orgaoJulgador(), a.sala(), a.turno(),a.uf())
+                        a -> new PautaDTO(a.data(), a.orgaoJulgador(), a.sala(), a.turno(), a.uf())
                 ));
     }
 
@@ -150,8 +149,9 @@ public class PautaService {
         var pautasPage = pautaRepository.listarPautas(statusAnalise, uf, orgaoJulgador, sala, pageable);
 
         List<PautaResponseDTO> dtos = pautasPage.getContent().stream()
-            .map(pautaMapper::toResponseDTO)
-            .toList();
-        return new PageResponse<>(dtos, pautasPage.getTotalElements(), pautasPage.getTotalPages(), pautasPage.getNumber());
+                .map(pautaMapper::toResponseDTO)
+                .toList();
+
+        return new PageResponse<>(dtos, page, size, pautasPage.getTotalElements(), pautasPage.getNumber());
     }
 }

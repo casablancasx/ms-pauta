@@ -1,7 +1,7 @@
 package br.gov.agu.nutec.mspauta.entity;
 
 
-import br.gov.agu.nutec.mspauta.enums.StatusAnaliseComparecimento;
+import br.gov.agu.nutec.mspauta.enums.StatusAnalise;
 import br.gov.agu.nutec.mspauta.enums.StatusEscalaPauta;
 import br.gov.agu.nutec.mspauta.enums.Turno;
 import jakarta.persistence.*;
@@ -40,7 +40,7 @@ public class PautaEntity {
 
     @Column(name = "status_analise_comparecimento")
     @Enumerated(EnumType.STRING)
-    private StatusAnaliseComparecimento statusAnaliseComparecimento;
+    private StatusAnalise respostaAnalise;
 
     @ManyToOne
     @JoinColumn(name = "orgao_julgador_id")

@@ -5,6 +5,7 @@ import br.gov.agu.nutec.mspauta.dto.response.PautaResponseDTO;
 import br.gov.agu.nutec.mspauta.entity.AdvogadoEntity;
 import br.gov.agu.nutec.mspauta.entity.AudienciaEntity;
 import br.gov.agu.nutec.mspauta.entity.PautaEntity;
+import br.gov.agu.nutec.mspauta.enums.StatusAnalise;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.Named;
@@ -41,7 +42,7 @@ public interface PautaMapper {
         return prioridade != null ? prioridade.name() : null;
     }
     
-    default String mapStatusAnaliseComparecimento(br.gov.agu.nutec.mspauta.enums.StatusAnaliseComparecimento status) {
+    default String mapStatusAnaliseComparecimento(StatusAnalise status) {
         if (status == null) {
             return null;
         }
