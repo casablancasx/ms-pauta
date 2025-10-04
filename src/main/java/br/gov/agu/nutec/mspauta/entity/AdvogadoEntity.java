@@ -17,8 +17,7 @@ import java.util.List;
 public class AdvogadoEntity {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "advogado_seq")
-    @SequenceGenerator(name = "advogado_seq", sequenceName = "tb_advogados_advogado_id_seq", allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "advogado_id", nullable = false)
     private Long advogadoId;
 
