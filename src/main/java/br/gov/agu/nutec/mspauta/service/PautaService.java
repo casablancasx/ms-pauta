@@ -70,16 +70,13 @@ public class PautaService {
 
             PautaEntity pauta = pautaRepository.save(
                     new PautaEntity(
-                            null,
                             chave.data(),
                             chave.turno(),
                             ESCALA_PENDENTE,
                             ESCALA_PENDENTE,
                             ANALISE_PENDENTE,
                             orgaoJulgador,
-                            sala,
-                            new ArrayList<>()
-                    )
+                            sala)
             );
 
             audienciaService.criarAudiencias(listaAudiencias, pauta);

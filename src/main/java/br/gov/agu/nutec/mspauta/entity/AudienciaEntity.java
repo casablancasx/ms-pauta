@@ -59,4 +59,17 @@ public class AudienciaEntity {
 
     private StatusAnalise resultadoAnalise;
 
+    public AudienciaEntity(String numeroProcesso, String classeJudicial, String assunto, String nomeParte, String horario, List<AdvogadoEntity> advogados, Prioridade prioridade, StatusCadastro statusCadastroAvaliador, PautaEntity pauta, StatusCadastro statusCadastroPautista, StatusAnalise resultadoAnalise) {
+        this.numeroProcesso = numeroProcesso;
+        this.classeJudicial = classeJudicial;
+        this.assunto = assunto;
+        this.nomeParte = nomeParte;
+        this.horario = horario;
+        this.advogados = advogados;
+        this.prioridade = prioridade;
+        this.statusCadastroAvaliador = statusCadastroAvaliador;
+        this.pauta = pauta;
+        this.statusCadastroPautista = statusCadastroPautista;
+        this.resultadoAnalise = resultadoAnalise;
+    }
 }

@@ -39,7 +39,6 @@ public class AudienciaService {
                             .toList();
 
                     return new AudienciaEntity(
-                            null,
                             a.cnj(),
                             a.classeJudicial(),
                             a.assunto(),
@@ -47,8 +46,8 @@ public class AudienciaService {
                             a.hora(),
                             advogados,
                             a.prioridade(),
-                            pauta,
                             CADASTRO_PENDETE,
+                            pauta,
                             CADASTRO_PENDETE,
                             ANALISE_PENDENTE
                     );

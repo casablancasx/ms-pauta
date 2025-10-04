@@ -55,5 +55,13 @@ public class PautaEntity {
     @OneToMany(mappedBy = "pauta")
     private List<AudienciaEntity> audiencias;
 
-
+    public PautaEntity(LocalDate data, Turno turno, StatusEscalaPauta statusEscalaAvaliador, StatusEscalaPauta statusEscalaPautista, StatusAnalise respostaAnalise, OrgaoJulgadorEntity orgaoJulgador, SalaEntity sala) {
+        this.data = data;
+        this.turno = turno;
+        this.statusEscalaAvaliador = statusEscalaAvaliador;
+        this.statusEscalaPautista = statusEscalaPautista;
+        this.respostaAnalise = respostaAnalise;
+        this.orgaoJulgador = orgaoJulgador;
+        this.sala = sala;
+    }
 }
