@@ -1,6 +1,8 @@
 package br.gov.agu.nutec.mspauta.service;
 
 import br.gov.agu.nutec.mspauta.entity.AdvogadoEntity;
+import br.gov.agu.nutec.mspauta.entity.UfEntity;
+import br.gov.agu.nutec.mspauta.enums.Uf;
 import br.gov.agu.nutec.mspauta.repository.AdvogadoRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -14,11 +16,9 @@ import java.util.stream.Collectors;
 public class AdvogadoService {
 
     private final AdvogadoRepository advogadoRepository;
+    private final UfService ufService;
 
-    /**
-     * Garante que todos os nomes informados possuam um registro de AdvogadoEntity persistido.
-     * Busca os existentes e cria os que faltarem. Retorna um mapa nome -> entidade.
-     */
+
     @Transactional
     public Map<String, AdvogadoEntity> ensureAdvogadosByNames(Set<String> nomesAdvogados) {
         if (nomesAdvogados == null || nomesAdvogados.isEmpty()) {
@@ -31,7 +31,12 @@ public class AdvogadoService {
 
         List<AdvogadoEntity> novos = nomesAdvogados.stream()
                 .filter(nome -> !existentes.containsKey(nome))
-                .map(nome -> new AdvogadoEntity(null, nome, false, new ArrayList<>()))
+                .map(nome -> {
+                    AdvogadoEntity a = new AdvogadoEntity();
+                    a.setNome(nome);
+                    a.setPrioritario(false);
+                    return a;
+                })
                 .toList();
 
         if (!novos.isEmpty()) {
@@ -40,5 +45,28 @@ public class AdvogadoService {
         }
 
         return existentes;
+    }
+
+
+    @Transactional
+    public AdvogadoEntity cadastrarAdvogadoPrioritario(String nome, List<Uf> ufs) {
+        if (nome == null || nome.isBlank()) {
+            throw new IllegalArgumentException("Nome do advogado é obrigatório");
+        }
+        List<Uf> listaUfs = Optional.ofNullable(ufs).orElseGet(Collections::emptyList);
+
+        AdvogadoEntity advogado = advogadoRepository.findByNome(nome)
+                .orElseGet(AdvogadoEntity::new);
+        advogado.setNome(nome);
+        advogado.setPrioritario(true);
+
+        List<UfEntity> entidadesUf = listaUfs.stream()
+                .filter(Objects::nonNull)
+                .distinct()
+                .map(ufService::buscarUfPorSigla)
+                .toList();
+        advogado.setUfs(new ArrayList<>(entidadesUf));
+
+        return advogadoRepository.save(advogado);
     }
 }
