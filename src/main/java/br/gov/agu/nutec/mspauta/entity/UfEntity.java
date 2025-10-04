@@ -26,4 +26,9 @@ public class UfEntity {
 
     @OneToMany(mappedBy = "uf")
     private List<OrgaoJulgadorEntity> orgaosJulgadores;
+
+
+    public UfEntity(Uf sigla) {
+        this.sigla = sigla;
+    }
 }

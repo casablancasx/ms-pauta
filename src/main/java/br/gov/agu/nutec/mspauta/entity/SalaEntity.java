@@ -29,4 +29,11 @@ public class SalaEntity {
 
     @OneToMany(mappedBy = "sala")
     private List<PautaEntity> pautas;
+
+
+
+    public SalaEntity(String nome, OrgaoJulgadorEntity orgaoJulgador) {
+        this.nome = nome;
+        this.orgaoJulgador = orgaoJulgador;
+    }
 }

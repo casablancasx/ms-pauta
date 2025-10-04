@@ -4,10 +4,15 @@ import br.gov.agu.nutec.mspauta.dto.AudienciaDTO;
 import br.gov.agu.nutec.mspauta.dto.PageResponse;
 import br.gov.agu.nutec.mspauta.dto.PautaDTO;
 import br.gov.agu.nutec.mspauta.dto.response.PautaResponseDTO;
-import br.gov.agu.nutec.mspauta.entity.*;
-import br.gov.agu.nutec.mspauta.enums.Uf;
+import br.gov.agu.nutec.mspauta.entity.OrgaoJulgadorEntity;
+import br.gov.agu.nutec.mspauta.entity.PautaEntity;
+import br.gov.agu.nutec.mspauta.entity.SalaEntity;
+import br.gov.agu.nutec.mspauta.entity.UfEntity;
 import br.gov.agu.nutec.mspauta.mapper.PautaMapper;
-import br.gov.agu.nutec.mspauta.repository.*;
+import br.gov.agu.nutec.mspauta.repository.OrgaoJulgadorRepository;
+import br.gov.agu.nutec.mspauta.repository.PautaRepository;
+import br.gov.agu.nutec.mspauta.repository.SalaRepository;
+import br.gov.agu.nutec.mspauta.repository.UfRepostiory;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.PageRequest;
@@ -22,7 +27,6 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 import static br.gov.agu.nutec.mspauta.enums.StatusAnalise.ANALISE_PENDENTE;
-import static br.gov.agu.nutec.mspauta.enums.StatusCadastro.CADASTRO_PENDETE;
 import static br.gov.agu.nutec.mspauta.enums.StatusEscalaPauta.ESCALA_PENDENTE;
 
 @Slf4j
@@ -30,13 +34,22 @@ import static br.gov.agu.nutec.mspauta.enums.StatusEscalaPauta.ESCALA_PENDENTE;
 @RequiredArgsConstructor
 public class PautaService {
 
-    private final OrgaoJulgadorRepository orgaoJulgadorRepository;
     private final PautaRepository pautaRepository;
-    private final AudienciaRepository audienciaRepository;
-    private final UfRepostiory ufRepostiory;
-    private final SalaRepository salaRepository;
-    private final AdvogadoRepository advogadoRepository;
+
+    private final AudienciaService audienciaService;
+    private final SalaService salaService;
+    private final OrgaoJulgadorService orgaoJulgadorService;
+    private final UfService ufService;
+
     private final PautaMapper pautaMapper;
+
+
+    private Map<PautaDTO, List<AudienciaDTO>> agruparAudienciasPorPauta(Set<AudienciaDTO> audiencias) {
+        return audiencias.stream()
+                .collect(Collectors.groupingBy(
+                        a -> new PautaDTO(a.data(), a.orgaoJulgador(), a.sala(), a.turno(), a.uf())
+                ));
+    }
 
 
     @Transactional
@@ -49,11 +62,11 @@ public class PautaService {
 
             List<AudienciaDTO> listaAudiencias = entry.getValue();
 
-            UfEntity uf = buscarOuCriarUf(chave.uf());
+            UfEntity uf = ufService.buscarUfPorSigla(chave.uf());
 
-            OrgaoJulgadorEntity orgaoJulgador = buscarOuCriarOrgaoJulgador(chave.orgaoJulgador(), uf);
+            OrgaoJulgadorEntity orgaoJulgador = orgaoJulgadorService.buscarPorNomeEUf(chave.orgaoJulgador(), uf);
 
-            SalaEntity sala = buscarOuCriarSala(chave.sala(), orgaoJulgador);
+            SalaEntity sala = salaService.buscarSalaPorNomeEOrgaoJulgador(chave.sala(), orgaoJulgador);
 
             PautaEntity pauta = pautaRepository.save(
                     new PautaEntity(
@@ -69,80 +82,10 @@ public class PautaService {
                     )
             );
 
-            List<AudienciaEntity> entidadesAudiencia = criarAudiencias(listaAudiencias, pauta);
-
-            audienciaRepository.saveAll(entidadesAudiencia);
+            audienciaService.criarAudiencias(listaAudiencias, pauta);
         }
     }
 
-    private UfEntity buscarOuCriarUf(Uf sigla) {
-        return ufRepostiory.findBySigla(sigla)
-                .orElseGet(() -> ufRepostiory.save(new UfEntity(null, sigla, new ArrayList<>())));
-    }
-
-    private OrgaoJulgadorEntity buscarOuCriarOrgaoJulgador(String nome, UfEntity uf) {
-        return orgaoJulgadorRepository.findByNome(nome)
-                .orElseGet(() -> orgaoJulgadorRepository.save(
-                        new OrgaoJulgadorEntity(null, nome, uf, new ArrayList<>(), new ArrayList<>()))
-                );
-    }
-
-    private SalaEntity buscarOuCriarSala(String nome, OrgaoJulgadorEntity orgaoJulgador) {
-        return salaRepository.findByNome(nome)
-                .orElseGet(() -> salaRepository.save(
-                        new SalaEntity(null, nome, orgaoJulgador, new ArrayList<>()))
-                );
-    }
-
-    private List<AudienciaEntity> criarAudiencias(List<AudienciaDTO> audiencias, PautaEntity pauta) {
-        Set<String> nomesAdvogados = audiencias.stream()
-                .flatMap(a -> a.advogados().stream())
-                .collect(Collectors.toSet());
-
-        Map<String, AdvogadoEntity> advogadosExistentes = advogadoRepository.findAllByNomeIn(nomesAdvogados)
-                .stream()
-                .collect(Collectors.toMap(AdvogadoEntity::getNome, a -> a));
-
-        List<AdvogadoEntity> novosAdvogados = nomesAdvogados.stream()
-                .filter(nome -> !advogadosExistentes.containsKey(nome))
-                .map(nome -> new AdvogadoEntity(null, nome, false, new ArrayList<>()))
-                .toList();
-
-        if (!novosAdvogados.isEmpty()) {
-            advogadoRepository.saveAll(novosAdvogados);
-            novosAdvogados.forEach(a -> advogadosExistentes.put(a.getNome(), a));
-        }
-
-        return audiencias.stream()
-                .map(a -> {
-                    List<AdvogadoEntity> advogados = a.advogados().stream()
-                            .map(advogadosExistentes::get)
-                            .toList();
-
-                    return new AudienciaEntity(
-                            null,
-                            a.cnj(),
-                            a.classeJudicial(),
-                            a.assunto(),
-                            a.poloAtivo(),
-                            a.hora(),
-                            advogados,
-                            a.prioridade(),
-                            pauta,
-                            CADASTRO_PENDETE,
-                            CADASTRO_PENDETE,
-                            ANALISE_PENDENTE
-                    );
-                })
-                .toList();
-    }
-
-    private Map<PautaDTO, List<AudienciaDTO>> agruparAudienciasPorPauta(Set<AudienciaDTO> audiencias) {
-        return audiencias.stream()
-                .collect(Collectors.groupingBy(
-                        a -> new PautaDTO(a.data(), a.orgaoJulgador(), a.sala(), a.turno(), a.uf())
-                ));
-    }
 
     public PageResponse<PautaResponseDTO> listarPautas(int page, int size, String statusAnalise, String uf, String orgaoJulgador, String sala) {
         Pageable pageable = PageRequest.of(page, size);

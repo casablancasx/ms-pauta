@@ -32,4 +32,10 @@ public class OrgaoJulgadorEntity {
 
     @OneToMany(mappedBy = "orgaoJulgador")
     private List<SalaEntity> salas;
+
+
+    public OrgaoJulgadorEntity(String nome, UfEntity uf) {
+        this.nome = nome;
+        this.uf = uf;
+    }
 }
