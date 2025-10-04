@@ -25,7 +25,7 @@ public class AudienciaService {
     private final AdvogadoService advogadoService;
 
     @Transactional
-    public List<AudienciaEntity> criarAudiencias(List<AudienciaDTO> audiencias, PautaEntity pauta) {
+    public void criarAudiencias(List<AudienciaDTO> audiencias, PautaEntity pauta) {
         Set<String> nomesAdvogados = audiencias.stream()
                 .flatMap(a -> a.advogados().stream())
                 .collect(Collectors.toSet());
@@ -54,6 +54,6 @@ public class AudienciaService {
                 })
                 .toList();
 
-        return audienciaRepository.saveAll(entidades);
+        audienciaRepository.saveAll(entidades);
     }
 }
