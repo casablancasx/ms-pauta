@@ -1,5 +1,7 @@
 package br.gov.agu.nutec.mspauta.service;
 
+import br.gov.agu.nutec.mspauta.dto.PageResponse;
+import br.gov.agu.nutec.mspauta.dto.response.AdvogadoResponseDTO;
 import br.gov.agu.nutec.mspauta.entity.AdvogadoEntity;
 import br.gov.agu.nutec.mspauta.entity.UfEntity;
 import br.gov.agu.nutec.mspauta.enums.Uf;
@@ -49,7 +51,7 @@ public class AdvogadoService {
 
 
     @Transactional
-    public AdvogadoEntity cadastrarAdvogadoPrioritario(String nome, List<Uf> ufs) {
+    public AdvogadoResponseDTO cadastrarAdvogadoPrioritario(String nome, List<Uf> ufs) {
         if (nome == null || nome.isBlank()) {
             throw new IllegalArgumentException("Nome do advogado é obrigatório");
         }
@@ -67,6 +69,40 @@ public class AdvogadoService {
                 .toList();
         advogado.setUfs(new ArrayList<>(entidadesUf));
 
-        return advogadoRepository.save(advogado);
+        return new AdvogadoResponseDTO(advogado.getAdvogadoId(), advogado.getNome(), ufs, advogado.isPrioritario());
+    }
+
+    public PageResponse<AdvogadoResponseDTO> listarAdvogados(int page, int size, boolean prioritarios) {
+
+
+        var pageable = org.springframework.data.domain.PageRequest.of(page, size);
+
+        var advogadosPage = prioritarios
+                ? advogadoRepository.findByIsPrioritario(true, pageable)
+                : advogadoRepository.findAll(pageable);
+
+        var dtos = advogadosPage.getContent().stream()
+                .map(a -> new AdvogadoResponseDTO(
+                        a.getAdvogadoId(),
+                        a.getNome(),
+                        Optional.ofNullable(a.getUfs()).orElseGet(Collections::emptyList)
+                                .stream()
+                                .map(UfEntity::getSigla)
+                                .toList(),
+                        a.isPrioritario()
+                ))
+                .toList();
+
+        return new PageResponse<>(
+                dtos,
+                advogadosPage.getNumber(),
+                advogadosPage.getSize(),
+                advogadosPage.getTotalElements(),
+                advogadosPage.getTotalPages()
+        );
+    }
+
+    public void deletarAdvogado(long id) {
+        advogadoRepository.deleteById(id);
     }
 }
