@@ -32,9 +32,9 @@ public class AudienciaService {
 
         Map<String, AdvogadoEntity> advogadosPorNome = advogadoService.ensureAdvogadosByNames(nomesAdvogados);
 
-        ClasseJudicialEntity classeJudicial = classeJudicialService.buscarClassePorNome(audiencias.get(0).classeJudicial());
+        ClasseJudicialEntity classeJudicial = classeJudicialService.buscarClassePorNome(audiencias.getFirst().classeJudicial());
 
-        AssuntoEntity assunto = assuntoService.buscarAssunto(audiencias.get(0).assunto());
+        AssuntoEntity assunto = assuntoService.buscarAssunto(audiencias.getFirst().assunto());
 
         List<AudienciaEntity> entidades = audiencias.stream()
                 .map(a -> {
