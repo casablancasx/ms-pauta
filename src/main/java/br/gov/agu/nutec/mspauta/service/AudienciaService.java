@@ -1,9 +1,7 @@
 package br.gov.agu.nutec.mspauta.service;
 
 import br.gov.agu.nutec.mspauta.dto.AudienciaDTO;
-import br.gov.agu.nutec.mspauta.entity.AdvogadoEntity;
-import br.gov.agu.nutec.mspauta.entity.AudienciaEntity;
-import br.gov.agu.nutec.mspauta.entity.PautaEntity;
+import br.gov.agu.nutec.mspauta.entity.*;
 import br.gov.agu.nutec.mspauta.repository.AudienciaRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -23,6 +21,8 @@ public class AudienciaService {
 
     private final AudienciaRepository audienciaRepository;
     private final AdvogadoService advogadoService;
+    private final ClasseJudicialService classeJudicialService;
+    private final AssuntoService assuntoService;
 
     @Transactional
     public void criarAudiencias(List<AudienciaDTO> audiencias, PautaEntity pauta) {
@@ -32,16 +32,21 @@ public class AudienciaService {
 
         Map<String, AdvogadoEntity> advogadosPorNome = advogadoService.ensureAdvogadosByNames(nomesAdvogados);
 
+        ClasseJudicialEntity classeJudicial = classeJudicialService.buscarClassePorNome(audiencias.get(0).classeJudicial());
+
+        AssuntoEntity assunto = assuntoService.buscarAssunto(audiencias.get(0).assunto());
+
         List<AudienciaEntity> entidades = audiencias.stream()
                 .map(a -> {
                     List<AdvogadoEntity> advogados = a.advogados().stream()
                             .map(advogadosPorNome::get)
                             .toList();
 
+
                     return new AudienciaEntity(
                             a.cnj(),
-                            a.classeJudicial(),
-                            a.assunto(),
+                            classeJudicial,
+                            assunto,
                             a.poloAtivo(),
                             a.hora(),
                             advogados,

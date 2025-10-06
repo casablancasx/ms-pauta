@@ -25,9 +25,13 @@ public class AudienciaEntity {
 
     private String numeroProcesso;
 
-    private String classeJudicial;
+    @ManyToOne
+    @JoinColumn(name = "classe_judicial_id")
+    private ClasseJudicialEntity classeJudicial;
 
-    private String assunto;
+    @ManyToOne
+    @JoinColumn(name = "assunto_id")
+    private AssuntoEntity assunto;
 
     private String nomeParte;
 
@@ -59,7 +63,7 @@ public class AudienciaEntity {
 
     private StatusAnalise resultadoAnalise;
 
-    public AudienciaEntity(String numeroProcesso, String classeJudicial, String assunto, String nomeParte, String horario, List<AdvogadoEntity> advogados, Prioridade prioridade, StatusCadastro statusCadastroAvaliador, PautaEntity pauta, StatusCadastro statusCadastroPautista, StatusAnalise resultadoAnalise) {
+    public AudienciaEntity(String numeroProcesso, ClasseJudicialEntity classeJudicial, AssuntoEntity assunto, String nomeParte, String horario, List<AdvogadoEntity> advogados, Prioridade prioridade, StatusCadastro statusCadastroAvaliador, PautaEntity pauta, StatusCadastro statusCadastroPautista, StatusAnalise resultadoAnalise) {
         this.numeroProcesso = numeroProcesso;
         this.classeJudicial = classeJudicial;
         this.assunto = assunto;

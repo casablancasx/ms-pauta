@@ -6,6 +6,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.Set;
+
 @Entity
 @Table(name = "tb_classes")
 @Getter
@@ -20,5 +22,12 @@ public class AssuntoEntity {
     private Integer assuntoId;
 
     private String nome;
+
+    @OneToMany(mappedBy = "assunto")
+    private Set<AudienciaEntity> audiencias;
+
+    public AssuntoEntity(String nome) {
+        this.nome = nome;
+    }
 
 }
