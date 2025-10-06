@@ -1,5 +1,8 @@
 package br.gov.agu.nutec.mspauta.entity;
 
+import jakarta.persistence.Column;
+import jakarta.persistence.Id;
+import jakarta.persistence.MappedSuperclass;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -11,9 +14,12 @@ import java.time.LocalDateTime;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
+@MappedSuperclass
 public abstract class EntidadeSapiens {
 
-    private Integer sapiensId;
+    @Id
+    @Column(name = "sapiens_id")
+    private Long sapiensId;
 
     private String nome;
 

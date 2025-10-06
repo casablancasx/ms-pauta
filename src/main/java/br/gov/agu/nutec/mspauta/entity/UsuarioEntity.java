@@ -16,11 +16,6 @@ import lombok.Setter;
 @AllArgsConstructor
 public class UsuarioEntity extends EntidadeSapiens {
 
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer usuarioId;
-
     @Enumerated(EnumType.STRING)
     private Role role;
 }
