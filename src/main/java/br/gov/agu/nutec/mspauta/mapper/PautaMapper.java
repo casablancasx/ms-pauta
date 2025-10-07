@@ -49,7 +49,6 @@ public interface PautaMapper {
     @Mapping(source = "assunto.nome", target = "assunto")
     @Mapping(source = "nomeParte", target = "nomeParte")
     @Mapping(source = "advogados", target = "advogados", qualifiedByName = "mapAdvogadosToNames")
-    @Mapping(source = "prioridade", target = "prioridade", qualifiedByName = "mapPrioridadeToString")
     @Mapping(target = "resultadoAnalise", ignore = true)
     @Mapping(target = "observacao", ignore = true)
     AudienciaResponseDTO mapAudienciaToDTO(AudienciaEntity audiencia);
