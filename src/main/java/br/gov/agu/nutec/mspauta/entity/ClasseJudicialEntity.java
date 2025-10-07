@@ -9,7 +9,7 @@ import lombok.Setter;
 import java.util.Set;
 
 @Entity
-@Table(name = "tb_classes")
+@Table(name = "tb_classes_judiciais")
 @Getter
 @Setter
 @NoArgsConstructor
@@ -18,8 +18,8 @@ public class ClasseJudicialEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "classe_id")
-    private Integer classeId;
+    @Column(name = "classe_judicial_id")
+    private Integer classeJudicialId;
 
     private String nome;
 

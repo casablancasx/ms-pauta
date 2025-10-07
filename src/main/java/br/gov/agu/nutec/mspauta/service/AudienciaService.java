@@ -13,7 +13,7 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 import static br.gov.agu.nutec.mspauta.enums.StatusAnaliseComparecimento.ANALISE_PENDENTE;
-import static br.gov.agu.nutec.mspauta.enums.StatusCadastro.CADASTRO_PENDETE;
+import static br.gov.agu.nutec.mspauta.enums.StatusCadastro.PENDENTE;
 
 @Service
 @RequiredArgsConstructor
@@ -55,9 +55,9 @@ public class AudienciaService {
                             a.hora(),
                             advogados,
                             prioridade,
-                            CADASTRO_PENDETE,
+                            PENDENTE,
                             pauta,
-                            CADASTRO_PENDETE,
+                            PENDENTE,
                             ANALISE_PENDENTE
                     );
                 })

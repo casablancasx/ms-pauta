@@ -9,7 +9,7 @@ import lombok.Setter;
 import java.util.Set;
 
 @Entity
-@Table(name = "tb_classes")
+@Table(name = "tb_assuntos")
 @Getter
 @Setter
 @NoArgsConstructor
