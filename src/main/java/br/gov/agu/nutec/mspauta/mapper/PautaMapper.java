@@ -6,7 +6,7 @@ import br.gov.agu.nutec.mspauta.entity.AdvogadoEntity;
 import br.gov.agu.nutec.mspauta.entity.AudienciaEntity;
 import br.gov.agu.nutec.mspauta.entity.PautaEntity;
 import br.gov.agu.nutec.mspauta.enums.Prioridade;
-import br.gov.agu.nutec.mspauta.enums.StatusAnalise;
+import br.gov.agu.nutec.mspauta.enums.StatusAnaliseComparecimento;
 import br.gov.agu.nutec.mspauta.enums.Turno;
 import org.mapstruct.InjectionStrategy;
 import org.mapstruct.Mapper;
@@ -45,8 +45,8 @@ public interface PautaMapper {
      */
     @Mapping(target = "hora", ignore = true)
     @Mapping(source = "numeroProcesso", target = "numeroProcesso")
-    @Mapping(source = "classeJudicial", target = "classeJudicial")
-    @Mapping(source = "assunto", target = "assunto")
+    @Mapping(source = "classeJudicial.nome", target = "classeJudicial")
+    @Mapping(source = "assunto.nome", target = "assunto")
     @Mapping(source = "nomeParte", target = "nomeParte")
     @Mapping(source = "advogados", target = "advogados", qualifiedByName = "mapAdvogadosToNames")
     @Mapping(source = "prioridade", target = "prioridade", qualifiedByName = "mapPrioridadeToString")
@@ -89,7 +89,7 @@ public interface PautaMapper {
      * @return Descrição do status de análise
      */
     @Named("mapStatusAnalise")
-    default String mapStatusAnalise(StatusAnalise status) {
+    default String mapStatusAnalise(StatusAnaliseComparecimento status) {
         if (status == null) {
             return null;
         }

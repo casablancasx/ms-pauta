@@ -9,10 +9,7 @@ import br.gov.agu.nutec.mspauta.entity.PautaEntity;
 import br.gov.agu.nutec.mspauta.entity.SalaEntity;
 import br.gov.agu.nutec.mspauta.entity.UfEntity;
 import br.gov.agu.nutec.mspauta.mapper.PautaMapper;
-import br.gov.agu.nutec.mspauta.repository.OrgaoJulgadorRepository;
 import br.gov.agu.nutec.mspauta.repository.PautaRepository;
-import br.gov.agu.nutec.mspauta.repository.SalaRepository;
-import br.gov.agu.nutec.mspauta.repository.UfRepostiory;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.PageRequest;
@@ -20,13 +17,12 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-import static br.gov.agu.nutec.mspauta.enums.StatusAnalise.ANALISE_PENDENTE;
+import static br.gov.agu.nutec.mspauta.enums.StatusAnaliseComparecimento.ANALISE_PENDENTE;
 import static br.gov.agu.nutec.mspauta.enums.StatusEscalaPauta.ESCALA_PENDENTE;
 
 @Slf4j

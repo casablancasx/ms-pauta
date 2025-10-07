@@ -25,10 +25,8 @@ public class AudienciaResponseDTO {
 
     private String classeJudicial;
 
-    private String prioridade;
+    private boolean isPrioritaria;
 
-    private String resultadoAnalise;
-
-    private String observacao;
+    private String analise;
 
 }

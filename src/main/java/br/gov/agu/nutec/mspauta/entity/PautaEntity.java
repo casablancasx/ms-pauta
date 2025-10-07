@@ -1,7 +1,7 @@
 package br.gov.agu.nutec.mspauta.entity;
 
 
-import br.gov.agu.nutec.mspauta.enums.StatusAnalise;
+import br.gov.agu.nutec.mspauta.enums.StatusAnaliseComparecimento;
 import br.gov.agu.nutec.mspauta.enums.StatusEscalaPauta;
 import br.gov.agu.nutec.mspauta.enums.Turno;
 import jakarta.persistence.*;
@@ -40,7 +40,7 @@ public class PautaEntity {
 
     @Column(name = "status_analise_comparecimento")
     @Enumerated(EnumType.STRING)
-    private StatusAnalise respostaAnalise;
+    private StatusAnaliseComparecimento analiseComparecimento;
 
     @ManyToOne
     @JoinColumn(name = "orgao_julgador_id")
@@ -55,12 +55,14 @@ public class PautaEntity {
     @OneToMany(mappedBy = "pauta")
     private List<AudienciaEntity> audiencias;
 
-    public PautaEntity(LocalDate data, Turno turno, StatusEscalaPauta statusEscalaAvaliador, StatusEscalaPauta statusEscalaPautista, StatusAnalise respostaAnalise, OrgaoJulgadorEntity orgaoJulgador, SalaEntity sala) {
+
+
+    public PautaEntity(LocalDate data, Turno turno, StatusEscalaPauta statusEscalaPauta, StatusEscalaPauta statusEscalaPauta1, StatusAnaliseComparecimento statusAnaliseComparecimento, OrgaoJulgadorEntity orgaoJulgador, SalaEntity sala) {
         this.data = data;
         this.turno = turno;
-        this.statusEscalaAvaliador = statusEscalaAvaliador;
-        this.statusEscalaPautista = statusEscalaPautista;
-        this.respostaAnalise = respostaAnalise;
+        this.statusEscalaAvaliador = statusEscalaPauta;
+        this.statusEscalaPautista = statusEscalaPauta1;
+        this.analiseComparecimento = statusAnaliseComparecimento;
         this.orgaoJulgador = orgaoJulgador;
         this.sala = sala;
     }

@@ -3,7 +3,7 @@ package br.gov.agu.nutec.mspauta.enums;
 import lombok.Getter;
 
 @Getter
-public enum StatusAnalise {
+public enum StatusAnaliseComparecimento {
 
     COMPARECIMENTO("Comparecimento"),
     NAO_COMPARECIMENTO("Não Comparecimento"),
@@ -11,7 +11,7 @@ public enum StatusAnalise {
 
     private String descricao;
 
-    StatusAnalise(String descricao) {
+    StatusAnaliseComparecimento(String descricao) {
         this.descricao = descricao;
     }
 }

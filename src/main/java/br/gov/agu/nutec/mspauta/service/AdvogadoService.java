@@ -52,22 +52,15 @@ public class AdvogadoService {
 
     @Transactional
     public AdvogadoResponseDTO cadastrarAdvogadoPrioritario(String nome, List<Uf> ufs) {
-        if (nome == null || nome.isBlank()) {
-            throw new IllegalArgumentException("Nome do advogado é obrigatório");
-        }
-        List<Uf> listaUfs = Optional.ofNullable(ufs).orElseGet(Collections::emptyList);
 
-        AdvogadoEntity advogado = advogadoRepository.findByNome(nome)
-                .orElseGet(AdvogadoEntity::new);
-        advogado.setNome(nome);
-        advogado.setPrioritario(true);
 
-        List<UfEntity> entidadesUf = listaUfs.stream()
+        List<UfEntity> entidadesUf = ufs.stream()
                 .filter(Objects::nonNull)
                 .distinct()
                 .map(ufService::buscarUfPorSigla)
                 .toList();
-        advogado.setUfs(new ArrayList<>(entidadesUf));
+
+        AdvogadoEntity advogado = advogadoRepository.save(new AdvogadoEntity(nome, entidadesUf));
 
         return new AdvogadoResponseDTO(advogado.getAdvogadoId(), advogado.getNome(), ufs, advogado.isPrioritario());
     }
@@ -105,4 +98,6 @@ public class AdvogadoService {
     public void deletarAdvogado(long id) {
         advogadoRepository.deleteById(id);
     }
+
+
 }

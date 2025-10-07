@@ -12,7 +12,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-import static br.gov.agu.nutec.mspauta.enums.StatusAnalise.ANALISE_PENDENTE;
+import static br.gov.agu.nutec.mspauta.enums.StatusAnaliseComparecimento.ANALISE_PENDENTE;
 import static br.gov.agu.nutec.mspauta.enums.StatusCadastro.CADASTRO_PENDETE;
 
 @Service
@@ -32,6 +32,7 @@ public class AudienciaService {
 
         Map<String, AdvogadoEntity> advogadosPorNome = advogadoService.ensureAdvogadosByNames(nomesAdvogados);
 
+
         ClasseJudicialEntity classeJudicial = classeJudicialService.buscarClassePorNome(audiencias.getFirst().classeJudicial());
 
         AssuntoEntity assunto = assuntoService.buscarAssunto(audiencias.getFirst().assunto());
@@ -42,6 +43,9 @@ public class AudienciaService {
                             .map(advogadosPorNome::get)
                             .toList();
 
+                    // Define a prioridade da audiência com base nos advogados ou no DTO
+                    boolean prioridade = advogados.stream()
+                            .anyMatch(AdvogadoEntity::isPrioritario);
 
                     return new AudienciaEntity(
                             a.cnj(),
@@ -50,7 +54,7 @@ public class AudienciaService {
                             a.poloAtivo(),
                             a.hora(),
                             advogados,
-                            a.prioridade(),
+                            prioridade,
                             CADASTRO_PENDETE,
                             pauta,
                             CADASTRO_PENDETE,

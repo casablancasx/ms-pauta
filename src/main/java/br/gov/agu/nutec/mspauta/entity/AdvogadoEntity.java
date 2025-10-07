@@ -20,7 +20,6 @@ public class AdvogadoEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "advogado_id", nullable = false)
     private Long advogadoId;
 
     private String nome;
@@ -28,7 +27,6 @@ public class AdvogadoEntity {
     @Column(name = "is_prioritario")
     private boolean isPrioritario;
 
-    // UFs onde o advogado atua
     @ManyToMany
     @JoinTable(
             name = "tb_advogado_ufs",
@@ -39,4 +37,12 @@ public class AdvogadoEntity {
 
     @ManyToMany(mappedBy = "advogados")
     private List<AudienciaEntity> audiencias;
+
+
+    public AdvogadoEntity(String nome, List<UfEntity> ufs) {
+        this.nome = nome;
+        this.isPrioritario = true;
+        this.ufs = ufs;
+        this.audiencias = new ArrayList<>();
+    }
 }

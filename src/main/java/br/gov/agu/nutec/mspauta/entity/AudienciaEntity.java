@@ -1,7 +1,6 @@
 package br.gov.agu.nutec.mspauta.entity;
 
-import br.gov.agu.nutec.mspauta.enums.Prioridade;
-import br.gov.agu.nutec.mspauta.enums.StatusAnalise;
+import br.gov.agu.nutec.mspauta.enums.StatusAnaliseComparecimento;
 import br.gov.agu.nutec.mspauta.enums.StatusCadastro;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -45,8 +44,7 @@ public class AudienciaEntity {
     )
     private List<AdvogadoEntity> advogados;
 
-    @Enumerated(EnumType.STRING)
-    private Prioridade prioridade;
+    private boolean isPrioritario;
 
     @ManyToOne
     @JoinColumn(name = "pauta_id")
@@ -61,16 +59,16 @@ public class AudienciaEntity {
     private StatusCadastro statusCadastroPautista;
 
 
-    private StatusAnalise resultadoAnalise;
+    private StatusAnaliseComparecimento resultadoAnalise;
 
-    public AudienciaEntity(String numeroProcesso, ClasseJudicialEntity classeJudicial, AssuntoEntity assunto, String nomeParte, String horario, List<AdvogadoEntity> advogados, Prioridade prioridade, StatusCadastro statusCadastroAvaliador, PautaEntity pauta, StatusCadastro statusCadastroPautista, StatusAnalise resultadoAnalise) {
+    public AudienciaEntity(String numeroProcesso, ClasseJudicialEntity classeJudicial, AssuntoEntity assunto, String nomeParte, String horario, List<AdvogadoEntity> advogados, boolean prioridade, StatusCadastro statusCadastroAvaliador, PautaEntity pauta, StatusCadastro statusCadastroPautista, StatusAnaliseComparecimento resultadoAnalise) {
         this.numeroProcesso = numeroProcesso;
         this.classeJudicial = classeJudicial;
         this.assunto = assunto;
         this.nomeParte = nomeParte;
         this.horario = horario;
         this.advogados = advogados;
-        this.prioridade = prioridade;
+        this.isPrioritario = prioridade;
         this.statusCadastroAvaliador = statusCadastroAvaliador;
         this.pauta = pauta;
         this.statusCadastroPautista = statusCadastroPautista;
