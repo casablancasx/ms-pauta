@@ -58,10 +58,12 @@ public class AudienciaEntity {
     @Column(name = "status_cadastro_pautista")
     private StatusCadastro statusCadastroPautista;
 
+    private StatusAnaliseComparecimento analiseComparecimento;
 
-    private StatusAnaliseComparecimento resultadoAnalise;
+    @Column(columnDefinition = "TEXT")
+    private String analise;
 
-    public AudienciaEntity(String numeroProcesso, ClasseJudicialEntity classeJudicial, AssuntoEntity assunto, String nomeParte, String horario, List<AdvogadoEntity> advogados, boolean prioridade, StatusCadastro statusCadastroAvaliador, PautaEntity pauta, StatusCadastro statusCadastroPautista, StatusAnaliseComparecimento resultadoAnalise) {
+    public AudienciaEntity(String numeroProcesso, ClasseJudicialEntity classeJudicial, AssuntoEntity assunto, String nomeParte, String horario, List<AdvogadoEntity> advogados, boolean prioridade, StatusCadastro statusCadastroAvaliador, PautaEntity pauta, StatusCadastro statusCadastroPautista, StatusAnaliseComparecimento analiseComparecimento) {
         this.numeroProcesso = numeroProcesso;
         this.classeJudicial = classeJudicial;
         this.assunto = assunto;
@@ -72,6 +74,6 @@ public class AudienciaEntity {
         this.statusCadastroAvaliador = statusCadastroAvaliador;
         this.pauta = pauta;
         this.statusCadastroPautista = statusCadastroPautista;
-        this.resultadoAnalise = resultadoAnalise;
+        this.analiseComparecimento = analiseComparecimento;
     }
 }

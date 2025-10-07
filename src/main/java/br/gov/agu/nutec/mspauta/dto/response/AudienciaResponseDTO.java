@@ -27,6 +27,8 @@ public class AudienciaResponseDTO {
 
     private boolean isPrioritaria;
 
+    private String statusComparecimento;
+
     private String analise;
 
 }

@@ -33,7 +33,7 @@ public interface PautaMapper {
      */
     @Mapping(source = "orgaoJulgador.nome", target = "orgaoJulgador")
     @Mapping(source = "turno", target = "turno", qualifiedByName = "mapTurnoToString")
-    @Mapping(source = "respostaAnalise", target = "respostaAnalise", qualifiedByName = "mapStatusAnalise")
+    @Mapping(source = "analiseComparecimento", target = "analiseComparecimento", qualifiedByName = "mapStatusAnalise")
     @Mapping(source = "audiencias", target = "audiencias")
     PautaResponseDTO toResponseDTO(PautaEntity entity);
 
@@ -49,8 +49,7 @@ public interface PautaMapper {
     @Mapping(source = "assunto.nome", target = "assunto")
     @Mapping(source = "nomeParte", target = "nomeParte")
     @Mapping(source = "advogados", target = "advogados", qualifiedByName = "mapAdvogadosToNames")
-    @Mapping(target = "resultadoAnalise", ignore = true)
-    @Mapping(target = "observacao", ignore = true)
+    @Mapping(target = "statusComparecimento", ignore = true)
     AudienciaResponseDTO mapAudienciaToDTO(AudienciaEntity audiencia);
 
     /**

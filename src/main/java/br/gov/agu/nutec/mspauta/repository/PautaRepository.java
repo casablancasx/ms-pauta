@@ -15,7 +15,7 @@ public interface PautaRepository extends JpaRepository<PautaEntity, Long> {
            "JOIN p.orgaoJulgador o " +
            "JOIN o.uf uf " +
            "JOIN p.sala s " +
-           "WHERE (:statusAnalise IS NULL OR p.respostaAnalise = :statusAnalise) " +
+           "WHERE (:statusAnalise IS NULL OR p.analiseComparecimento= :statusAnalise) " +
            "AND (:uf IS NULL OR uf.sigla = :uf) " +
            "AND (:orgaoJulgador IS NULL OR o.nome = :orgaoJulgador) " +
            "AND (:sala IS NULL OR s.nome = :sala)")
