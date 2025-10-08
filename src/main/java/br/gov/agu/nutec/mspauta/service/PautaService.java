@@ -101,4 +101,8 @@ public class PautaService {
         pauta = pautaRepository.save(pauta);
         return pautaMapper.toResponseDTO(pauta);
     }
+
+    public void deletarPauta(long id) {
+        pautaRepository.deleteById(id);
+    }
 }

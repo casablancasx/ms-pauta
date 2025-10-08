@@ -38,4 +38,10 @@ public class PautaController {
         PautaResponseDTO resposne = pautaService.atualizarComparecimento(request);
         return ResponseEntity.ok(resposne);
     }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deletarPauta(@PathVariable long id){
+        pautaService.deletarPauta(id);
+        return ResponseEntity.noContent().build();
+    }
 }
