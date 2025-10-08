@@ -105,4 +105,11 @@ public class PautaService {
     public void deletarPauta(long id) {
         pautaRepository.deleteById(id);
     }
+
+    public PautaResponseDTO buscarPautaPorId(Long id) {
+        PautaEntity pauta = pautaRepository.findById(id).orElseThrow(
+                () -> new RuntimeException("Pauta id não encontrada")
+        );
+        return pautaMapper.toResponseDTO(pauta);
+    }
 }

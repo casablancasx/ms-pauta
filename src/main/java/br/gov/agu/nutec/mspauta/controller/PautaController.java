@@ -32,6 +32,12 @@ public class PautaController {
         return ResponseEntity.ok(response);
     }
 
+    @GetMapping("/{id}")
+    public ResponseEntity<PautaResponseDTO> bucarPautaPorId(@PathVariable Long id){
+        PautaResponseDTO response = pautaService.buscarPautaPorId(id);
+        return ResponseEntity.ok(response);
+
+    }
 
     @PatchMapping("/analise-comparecimento")
     public ResponseEntity<PautaResponseDTO> atualizarAnaliseComparecimento(@RequestBody PautaUpdateDTO request){
