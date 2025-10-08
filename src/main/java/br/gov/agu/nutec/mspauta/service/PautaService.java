@@ -3,6 +3,7 @@ package br.gov.agu.nutec.mspauta.service;
 import br.gov.agu.nutec.mspauta.dto.AudienciaDTO;
 import br.gov.agu.nutec.mspauta.dto.PageResponse;
 import br.gov.agu.nutec.mspauta.dto.PautaDTO;
+import br.gov.agu.nutec.mspauta.dto.request.PautaUpdateDTO;
 import br.gov.agu.nutec.mspauta.dto.response.PautaResponseDTO;
 import br.gov.agu.nutec.mspauta.entity.OrgaoJulgadorEntity;
 import br.gov.agu.nutec.mspauta.entity.PautaEntity;
@@ -89,5 +90,15 @@ public class PautaService {
                 .toList();
 
         return new PageResponse<>(dtos, page, size, pautasPage.getTotalElements(), pautasPage.getNumber());
+    }
+
+    public PautaResponseDTO atualizarComparecimento(PautaUpdateDTO request) {
+        PautaEntity pauta = pautaRepository.findById(request.pautaId()).orElseThrow(
+                () -> new RuntimeException("Pauta id não encontrada")
+        );
+
+        pauta.setAnaliseComparecimento(request.analiseComparecimento());
+        pauta = pautaRepository.save(pauta);
+        return pautaMapper.toResponseDTO(pauta);
     }
 }

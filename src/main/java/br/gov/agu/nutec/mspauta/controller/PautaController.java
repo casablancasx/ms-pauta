@@ -1,14 +1,12 @@
 package br.gov.agu.nutec.mspauta.controller;
 
+import br.gov.agu.nutec.mspauta.dto.request.PautaUpdateDTO;
 import br.gov.agu.nutec.mspauta.dto.response.PautaResponseDTO;
 import br.gov.agu.nutec.mspauta.dto.PageResponse;
 import br.gov.agu.nutec.mspauta.service.PautaService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/pautas")
@@ -32,5 +30,12 @@ public class PautaController {
 
         var response = pautaService.listarPautas(page, size, resultadoAnalise, uf, orgaoJulgador, sala);
         return ResponseEntity.ok(response);
+    }
+
+
+    @PatchMapping("/analise-comparecimento")
+    public ResponseEntity<PautaResponseDTO> atualizarAnaliseComparecimento(@RequestBody PautaUpdateDTO request){
+        PautaResponseDTO resposne = pautaService.atualizarComparecimento(request);
+        return ResponseEntity.ok(resposne);
     }
 }
