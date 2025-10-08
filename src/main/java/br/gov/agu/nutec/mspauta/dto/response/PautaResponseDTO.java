@@ -16,7 +16,6 @@ import java.util.List;
 @AllArgsConstructor
 public class PautaResponseDTO {
 
-    @JsonProperty("pauta_id")
     private Long pautaId;
 
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd/MM/yyyy")
