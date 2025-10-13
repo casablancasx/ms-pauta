@@ -3,13 +3,14 @@ package br.gov.agu.nutec.mspauta.controller;
 import br.gov.agu.nutec.mspauta.dto.request.PautaUpdateDTO;
 import br.gov.agu.nutec.mspauta.dto.response.PautaResponseDTO;
 import br.gov.agu.nutec.mspauta.dto.PageResponse;
+import br.gov.agu.nutec.mspauta.enums.Uf;
 import br.gov.agu.nutec.mspauta.service.PautaService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/pautas")
+@RequestMapping("/pauta")
 @RequiredArgsConstructor
 public class PautaController {
 
@@ -23,12 +24,12 @@ public class PautaController {
             @RequestParam int page,
             @RequestParam int size,
             @RequestParam(required = false) String resultadoAnalise,
-            @RequestParam(required = false) String uf,
-            @RequestParam(required = false) String orgaoJulgador,
-            @RequestParam(required = false) String sala
+            @RequestParam(required = false) Integer ufId,
+            @RequestParam(required = false) Long orgaoJulgadorId,
+            @RequestParam(required = false) Long salaId
     ){
 
-        var response = pautaService.listarPautas(page, size, resultadoAnalise, uf, orgaoJulgador, sala);
+        var response = pautaService.listarPautas(page, size, resultadoAnalise, ufId, orgaoJulgadorId, salaId);
         return ResponseEntity.ok(response);
     }
 

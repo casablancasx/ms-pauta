@@ -6,6 +6,7 @@ import br.gov.agu.nutec.mspauta.entity.UfEntity;
 import br.gov.agu.nutec.mspauta.enums.Uf;
 import br.gov.agu.nutec.mspauta.mapper.OrgaoJulgadorMapper;
 import br.gov.agu.nutec.mspauta.repository.OrgaoJulgadorRepository;
+import jakarta.persistence.criteria.CriteriaBuilder;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -30,8 +31,8 @@ public class OrgaoJulgadorService {
         return repository.save(new OrgaoJulgadorEntity(nome,uf));
     }
 
-    public List<OrgaoJulgadorResponse> listarOrgaoJulgadores(String nome, Uf uf){
-        List<OrgaoJulgadorEntity> orgaos = repository.findOrgaoJulgadorByNomeContainsIgnoreCaseAndUf_Sigla(nome, uf);
+    public List<OrgaoJulgadorResponse> listarOrgaoJulgadores(int ufId){
+        List<OrgaoJulgadorEntity> orgaos = repository.findOrgaoJulgadorByUf_UfId(ufId);
         return orgaos.stream().map(mapper::mapToResponse).toList();
     }
 

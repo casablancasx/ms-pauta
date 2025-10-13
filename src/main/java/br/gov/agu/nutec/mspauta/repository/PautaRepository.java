@@ -11,18 +11,20 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface PautaRepository extends JpaRepository<PautaEntity, Long> {
 
-    @Query("SELECT p FROM PautaEntity p " +
-           "JOIN p.orgaoJulgador o " +
-           "JOIN o.uf uf " +
-           "JOIN p.sala s " +
-           "WHERE (:statusAnalise IS NULL OR p.analiseComparecimento= :statusAnalise) " +
-           "AND (:uf IS NULL OR uf.sigla = :uf) " +
-           "AND (:orgaoJulgador IS NULL OR o.nome = :orgaoJulgador) " +
-           "AND (:sala IS NULL OR s.nome = :sala)")
+    @Query("""
+    SELECT p FROM PautaEntity p
+    JOIN p.orgaoJulgador o
+    JOIN o.uf uf
+    JOIN p.sala s
+    WHERE (:statusAnalise IS NULL OR p.analiseComparecimento = :statusAnalise)
+      AND (:ufId IS NULL OR uf.ufId = :ufId)
+      AND (:orgaoJulgadorId IS NULL OR o.orgaoJulgadorId = :orgaoJulgadorId)
+      AND (:salaId IS NULL OR s.salaId = :salaId)
+    """)
     Page<PautaEntity> listarPautas(@Param("statusAnalise") String statusAnalise,
-                                   @Param("uf") String uf,
-                                   @Param("orgaoJulgador") String orgaoJulgador,
-                                   @Param("sala") String sala,
+                                   @Param("ufId") Integer ufId,
+                                   @Param("orgaoJulgadorId") Long orgaoJulgadorId,
+                                   @Param("salaId") Long salaId,
                                    Pageable pageable);
 
 }
