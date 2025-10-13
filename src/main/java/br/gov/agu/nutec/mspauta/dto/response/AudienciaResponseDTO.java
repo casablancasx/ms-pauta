@@ -13,6 +13,8 @@ import java.util.List;
 @AllArgsConstructor
 public class AudienciaResponseDTO {
 
+    private Long audienciaId;
+
     private String numeroProcesso;
 
     private String hora;

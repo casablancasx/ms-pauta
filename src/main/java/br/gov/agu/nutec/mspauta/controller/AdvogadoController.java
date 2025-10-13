@@ -37,7 +37,7 @@ public class AdvogadoController {
     @PostMapping
     public ResponseEntity<AdvogadoResponseDTO> cadastrarAdvogadoPrioritario(@RequestBody AdvogadoRequestDTO request){
         var response = service.cadastrarAdvogadoPrioritario(request.nome(),request.ufs());
-        return ResponseEntity.created(URI.create("/advogado/" + response.id())).body(response);
+        return ResponseEntity.created(URI.create("/advogado/" + response.advogadoId())).body(response);
     }
 
     @DeleteMapping("/{id}")
