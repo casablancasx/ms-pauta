@@ -15,6 +15,7 @@ public interface PautaRepository extends JpaRepository<PautaEntity, Long> {
     @Query("""
     SELECT DISTINCT pauta FROM PautaEntity pauta
     LEFT JOIN pauta.audiencias audiencia
+    LEFT JOIN pauta.escala escala
     LEFT JOIN audiencia.assunto assunto
     LEFT JOIN pauta.orgaoJulgador orgaoJulgador
     LEFT JOIN orgaoJulgador.uf uf
@@ -25,6 +26,7 @@ public interface PautaRepository extends JpaRepository<PautaEntity, Long> {
       AND (:salaId IS NULL OR sala.salaId = :salaId)
       AND (:assuntoId IS NULL OR assunto.assuntoId = :assuntoId)
       AND (:prioritarias IS NULL OR audiencia.isPrioritario = :prioritarias)
+      AND (:avaliadorId IS NULL OR escala.avaliador.sapiensId = :avaliadorId)
     """)
     Page<PautaEntity> listarPautas(@Param("statusAnalise") StatusAnaliseComparecimento statusAnalise,
                                    @Param("ufId")  Integer ufId,
@@ -32,6 +34,7 @@ public interface PautaRepository extends JpaRepository<PautaEntity, Long> {
                                    @Param("salaId") Long salaId,
                                    @Param("assuntoId") Integer assuntoId,
                                    @Param("prioritarias") Boolean prioritarias,
+                                   @Param("avaliadorId") Long avaliadorId,
                                    Pageable pageable);
 
 }

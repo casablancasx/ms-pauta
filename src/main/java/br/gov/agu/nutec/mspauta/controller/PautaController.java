@@ -29,10 +29,11 @@ public class PautaController {
             @RequestParam(required = false) Long orgaoJulgadorId,
             @RequestParam(required = false) Long salaId,
             @RequestParam(required = false) Integer assuntoId,
-            @RequestParam(required = false) Boolean prioritarias
+            @RequestParam(required = false) Boolean prioritarias,
+            @RequestParam(required = false) Long avaliadorId
     ){
 
-        var response = pautaService.listarPautas(page, size, resultadoAnalise, ufId, orgaoJulgadorId, salaId, assuntoId, prioritarias);
+        var response = pautaService.listarPautas(page, size, resultadoAnalise, ufId, orgaoJulgadorId, salaId, assuntoId, prioritarias, avaliadorId);
         return ResponseEntity.ok(response);
     }
 
