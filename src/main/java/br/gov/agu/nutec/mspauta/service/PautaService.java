@@ -9,6 +9,7 @@ import br.gov.agu.nutec.mspauta.entity.OrgaoJulgadorEntity;
 import br.gov.agu.nutec.mspauta.entity.PautaEntity;
 import br.gov.agu.nutec.mspauta.entity.SalaEntity;
 import br.gov.agu.nutec.mspauta.entity.UfEntity;
+import br.gov.agu.nutec.mspauta.enums.StatusAnaliseComparecimento;
 import br.gov.agu.nutec.mspauta.enums.Uf;
 import br.gov.agu.nutec.mspauta.mapper.PautaMapper;
 import br.gov.agu.nutec.mspauta.repository.PautaRepository;
@@ -82,10 +83,10 @@ public class PautaService {
     }
 
 
-    public PageResponse<PautaResponseDTO> listarPautas(int page, int size, String statusAnalise, Integer ufId, Long orgaoJulgadorId, Long salaId, Integer assuntoId) {
+    public PageResponse<PautaResponseDTO> listarPautas(int page, int size, StatusAnaliseComparecimento statusAnalise, Integer ufId, Long orgaoJulgadorId, Long salaId, Integer assuntoId, Boolean prioritarias) {
         Pageable pageable = PageRequest.of(page, size);
 
-        var pautasPage = pautaRepository.listarPautas(statusAnalise, ufId, orgaoJulgadorId, salaId,assuntoId, pageable);
+        var pautasPage = pautaRepository.listarPautas(statusAnalise, ufId, orgaoJulgadorId, salaId,assuntoId,prioritarias, pageable);
 
         List<PautaResponseDTO> dtos = pautasPage.getContent().stream()
                 .map(pautaMapper::toResponseDTO)

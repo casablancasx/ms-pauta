@@ -1,6 +1,7 @@
 package br.gov.agu.nutec.mspauta.repository;
 
 import br.gov.agu.nutec.mspauta.entity.PautaEntity;
+import br.gov.agu.nutec.mspauta.enums.StatusAnaliseComparecimento;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -23,12 +24,14 @@ public interface PautaRepository extends JpaRepository<PautaEntity, Long> {
       AND (:orgaoJulgadorId IS NULL OR orgaoJulgador.orgaoJulgadorId = :orgaoJulgadorId)
       AND (:salaId IS NULL OR sala.salaId = :salaId)
       AND (:assuntoId IS NULL OR assunto.assuntoId = :assuntoId)
+      AND (:prioritarias IS NULL OR audiencia.isPrioritario = :prioritarias)
     """)
-    Page<PautaEntity> listarPautas(@Param("statusAnalise") String statusAnalise,
+    Page<PautaEntity> listarPautas(@Param("statusAnalise") StatusAnaliseComparecimento statusAnalise,
                                    @Param("ufId")  Integer ufId,
                                    @Param("orgaoJulgadorId") Long orgaoJulgadorId,
                                    @Param("salaId") Long salaId,
                                    @Param("assuntoId") Integer assuntoId,
+                                   @Param("prioritarias") Boolean prioritarias,
                                    Pageable pageable);
 
 }

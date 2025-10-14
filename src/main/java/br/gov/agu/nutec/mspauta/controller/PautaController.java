@@ -3,6 +3,7 @@ package br.gov.agu.nutec.mspauta.controller;
 import br.gov.agu.nutec.mspauta.dto.request.PautaUpdateDTO;
 import br.gov.agu.nutec.mspauta.dto.response.PautaResponseDTO;
 import br.gov.agu.nutec.mspauta.dto.PageResponse;
+import br.gov.agu.nutec.mspauta.enums.StatusAnaliseComparecimento;
 import br.gov.agu.nutec.mspauta.enums.Uf;
 import br.gov.agu.nutec.mspauta.service.PautaService;
 import lombok.RequiredArgsConstructor;
@@ -23,14 +24,15 @@ public class PautaController {
     public ResponseEntity<PageResponse<PautaResponseDTO>> listarPautas(
             @RequestParam int page,
             @RequestParam int size,
-            @RequestParam(required = false) String resultadoAnalise,
+            @RequestParam(required = false) StatusAnaliseComparecimento resultadoAnalise,
             @RequestParam(required = false) Integer ufId,
             @RequestParam(required = false) Long orgaoJulgadorId,
             @RequestParam(required = false) Long salaId,
-            @RequestParam(required = false) Integer assuntoId
+            @RequestParam(required = false) Integer assuntoId,
+            @RequestParam(required = false) Boolean prioritarias
     ){
 
-        var response = pautaService.listarPautas(page, size, resultadoAnalise, ufId, orgaoJulgadorId, salaId, assuntoId);
+        var response = pautaService.listarPautas(page, size, resultadoAnalise, ufId, orgaoJulgadorId, salaId, assuntoId, prioritarias);
         return ResponseEntity.ok(response);
     }
 
