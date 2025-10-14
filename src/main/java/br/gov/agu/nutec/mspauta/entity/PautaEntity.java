@@ -46,16 +46,16 @@ public class PautaEntity {
     @JoinColumn(name = "orgao_julgador_id")
     private OrgaoJulgadorEntity orgaoJulgador;
 
-
     @ManyToOne
     @JoinColumn(name = "sala_id")
     private SalaEntity sala;
 
-
     @OneToMany(mappedBy = "pauta")
     private List<AudienciaEntity> audiencias;
 
-
+    // Referência à escala desta pauta (há no máximo 1 escala por pauta)
+    @OneToOne(mappedBy = "pauta", fetch = FetchType.LAZY)
+    private EscalaEntity escala;
 
     public PautaEntity(LocalDate data, Turno turno, StatusEscalaPauta statusEscalaPauta, StatusEscalaPauta statusEscalaPauta1, StatusAnaliseComparecimento statusAnaliseComparecimento, OrgaoJulgadorEntity orgaoJulgador, SalaEntity sala) {
         this.data = data;

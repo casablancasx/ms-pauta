@@ -25,6 +25,10 @@ public class PautaResponseDTO {
 
     private String turno;
 
+    private String sala;
+
+    private String pautista;
+
     private String analiseComparecimento;
 
     private List<AudienciaResponseDTO> audiencias;

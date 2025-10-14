@@ -35,6 +35,8 @@ public interface PautaMapper {
     @Mapping(source = "turno", target = "turno", qualifiedByName = "mapTurnoToString")
     @Mapping(source = "analiseComparecimento", target = "analiseComparecimento", qualifiedByName = "mapStatusAnalise")
     @Mapping(source = "audiencias", target = "audiencias")
+    @Mapping(source = "sala.nome", target = "sala")
+    @Mapping(source = "escala.pautista.nome", target = "pautista")
     PautaResponseDTO toResponseDTO(PautaEntity entity);
 
     /**
