@@ -82,9 +82,10 @@ public class PautaService {
     }
 
 
-    public PageResponse<PautaResponseDTO> listarPautas(int page, int size, String statusAnalise, Integer ufId, Long orgaoJulgadorId, Long salaId) {
+    public PageResponse<PautaResponseDTO> listarPautas(int page, int size, String statusAnalise, Integer ufId, Long orgaoJulgadorId, Long salaId, Integer assuntoId) {
         Pageable pageable = PageRequest.of(page, size);
-        var pautasPage = pautaRepository.listarPautas(statusAnalise, ufId, orgaoJulgadorId, salaId, pageable);
+
+        var pautasPage = pautaRepository.listarPautas(statusAnalise, ufId, orgaoJulgadorId, salaId,assuntoId, pageable);
 
         List<PautaResponseDTO> dtos = pautasPage.getContent().stream()
                 .map(pautaMapper::toResponseDTO)
