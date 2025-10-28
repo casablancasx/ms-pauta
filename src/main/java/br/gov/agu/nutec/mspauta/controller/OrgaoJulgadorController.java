@@ -22,9 +22,9 @@ public class OrgaoJulgadorController {
 
     @GetMapping
     public ResponseEntity<List<OrgaoJulgadorResponse>> listarOrgaoJulgadores(
-            @RequestParam int ufId
+            @RequestParam List<Integer> ufIds
     ) {
-        List<OrgaoJulgadorResponse> response = service.listarOrgaoJulgadores(ufId);
+        List<OrgaoJulgadorResponse> response = service.listarOrgaoJulgadores(ufIds);
         return ResponseEntity.ok(response);
     }
 

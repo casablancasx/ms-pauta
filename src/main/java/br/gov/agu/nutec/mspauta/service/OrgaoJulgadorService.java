@@ -31,8 +31,8 @@ public class OrgaoJulgadorService {
         return repository.save(new OrgaoJulgadorEntity(nome,uf));
     }
 
-    public List<OrgaoJulgadorResponse> listarOrgaoJulgadores(int ufId){
-        List<OrgaoJulgadorEntity> orgaos = repository.findOrgaoJulgadorByUf_UfId(ufId);
+    public List<OrgaoJulgadorResponse> listarOrgaoJulgadores(List<Integer> ufIds){
+        List<OrgaoJulgadorEntity> orgaos = repository.findOrgaoJulgadorPorUfIds(ufIds);
         return orgaos.stream().map(mapper::mapToResponse).toList();
     }
 
