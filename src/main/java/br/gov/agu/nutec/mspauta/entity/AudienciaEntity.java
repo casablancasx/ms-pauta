@@ -45,6 +45,11 @@ public class AudienciaEntity {
     private String nomeParte;
 
 
+    @ManyToOne
+    @JoinColumn(name = "orgao_julgador_id")
+    private OrgaoJulgadorEntity orgaoJulgador;
+
+
     @ManyToMany
     @JoinTable(
             name = "tb_audiencia_advogado",
@@ -56,15 +61,27 @@ public class AudienciaEntity {
     @Column(name = "audiencia_prioritaria", nullable = false)
     private boolean isPrioritario;
 
-    @Column(name = "cadastrado_sapiens_para_avaliador", nullable = false)
+    @Column(name = "cadastrada_sapiens_para_avaliador", nullable = false)
     private boolean statusCadastroAvaliador;
 
-    @Column(name = "cadastrado_sapiens_para_pautista", nullable = false)
+    @Column(name = "cadastrada_sapiens_para_pautista", nullable = false)
     private boolean statusCadastroPautista;
 
     private StatusAnaliseComparecimento analiseComparecimento;
 
     @Column(columnDefinition = "TEXT")
     private String analise;
+
+    @ManyToOne
+    @JoinColumn(name = "avaliador_id")
+    private AvaliadorEntity avaliador;
+
+    @ManyToOne
+    @JoinColumn(name = "pautista_id")
+    private PautistaEntity pautista;
+
+    @ManyToOne
+    @JoinColumn(name = "sala_id", nullable = false)
+    private SalaEntity sala;
 
 }

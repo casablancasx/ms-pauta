@@ -28,7 +28,7 @@ public class OrgaoJulgadorEntity {
     private UfEntity uf;
 
     @OneToMany(mappedBy = "orgaoJulgador")
-    private List<PautaEntity> pautas;
+    private List<AudienciaEntity> audiencias;
 
     @OneToMany(mappedBy = "orgaoJulgador")
     private List<SalaEntity> salas;
