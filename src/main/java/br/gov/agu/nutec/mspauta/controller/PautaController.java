@@ -4,8 +4,6 @@ import br.gov.agu.nutec.mspauta.dto.request.PautaUpdateDTO;
 import br.gov.agu.nutec.mspauta.dto.response.PautaResponseDTO;
 import br.gov.agu.nutec.mspauta.dto.PageResponse;
 import br.gov.agu.nutec.mspauta.enums.StatusAnaliseComparecimento;
-import br.gov.agu.nutec.mspauta.enums.Uf;
-import br.gov.agu.nutec.mspauta.service.PautaService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

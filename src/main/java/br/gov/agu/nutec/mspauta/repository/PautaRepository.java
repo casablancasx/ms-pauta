@@ -1,6 +1,5 @@
 package br.gov.agu.nutec.mspauta.repository;
 
-import br.gov.agu.nutec.mspauta.entity.PautaEntity;
 import br.gov.agu.nutec.mspauta.enums.StatusAnaliseComparecimento;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;

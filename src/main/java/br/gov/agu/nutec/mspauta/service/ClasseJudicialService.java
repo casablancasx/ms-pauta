@@ -1,6 +1,5 @@
 package br.gov.agu.nutec.mspauta.service;
 
-import br.gov.agu.nutec.mspauta.entity.ClasseJudicialEntity;
 import br.gov.agu.nutec.mspauta.repository.ClasseRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;

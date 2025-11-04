@@ -1,5 +1,6 @@
 package br.gov.agu.nutec.mspauta.mapper;
 
+import br.gov.agu.nutec.mspauta.dto.AudienciaDTO;
 import br.gov.agu.nutec.mspauta.dto.response.AudienciaResponseDTO;
 import br.gov.agu.nutec.mspauta.entity.AdvogadoEntity;
 import br.gov.agu.nutec.mspauta.entity.AudienciaEntity;
@@ -16,6 +17,12 @@ import java.util.stream.Collectors;
 
 @Mapper(componentModel = "spring", injectionStrategy = InjectionStrategy.CONSTRUCTOR)
 public interface AudieciaMapper {
+
+
+
+    @Mapping(target = "audienciaId", ignore = true)
+    AudienciaEntity mapToEntity(AudienciaDTO audienciaDTO);
+
 
     @Mapping(source = "audienciaId", target = "audienciaId")
     @Mapping(source = "numeroProcesso", target = "numeroProcesso")

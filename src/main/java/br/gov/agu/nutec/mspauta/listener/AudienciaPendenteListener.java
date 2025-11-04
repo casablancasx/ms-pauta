@@ -2,7 +2,6 @@ package br.gov.agu.nutec.mspauta.listener;
 
 import br.gov.agu.nutec.mspauta.dto.AudienciaDTO;
 import br.gov.agu.nutec.mspauta.dto.AudienciaMessage;
-import br.gov.agu.nutec.mspauta.service.PautaService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.stereotype.Component;
