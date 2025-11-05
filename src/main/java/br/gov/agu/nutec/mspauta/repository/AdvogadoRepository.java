@@ -11,7 +11,8 @@ import java.util.*;
 @Repository
 public interface AdvogadoRepository extends JpaRepository<AdvogadoEntity, Long> {
     Optional<AdvogadoEntity> findByNome(String nome);
-    List<AdvogadoEntity> findAllByNomeIn(Set<String> nomes);
+
+    List<AdvogadoEntity> findAllByNomeIn(List<String> nomes);
 
     Page<AdvogadoEntity> findByIsPrioritario(boolean isPrioritario, Pageable pageable);
 }

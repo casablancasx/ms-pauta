@@ -22,7 +22,8 @@ public class AdvogadoService {
 
 
     @Transactional
-    public Map<String, AdvogadoEntity> ensureAdvogadosByNames(Set<String> nomesAdvogados) {
+    public Map<String, AdvogadoEntity> ensureAdvogadosByNames(List<String> nomesAdvogados) {
+
         if (nomesAdvogados == null || nomesAdvogados.isEmpty()) {
             return Collections.emptyMap();
         }

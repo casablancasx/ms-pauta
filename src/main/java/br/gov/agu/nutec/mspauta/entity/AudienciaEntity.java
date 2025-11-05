@@ -1,6 +1,7 @@
 package br.gov.agu.nutec.mspauta.entity;
 
 import br.gov.agu.nutec.mspauta.enums.StatusAnaliseComparecimento;
+import br.gov.agu.nutec.mspauta.enums.TipoContestacao;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -83,5 +84,7 @@ public class AudienciaEntity {
     @ManyToOne
     @JoinColumn(name = "sala_id", nullable = false)
     private SalaEntity sala;
+
+    private TipoContestacao tipoContestacao;
 
 }
