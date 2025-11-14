@@ -6,7 +6,7 @@ import br.gov.agu.nutec.mspauta.entity.AdvogadoEntity;
 import br.gov.agu.nutec.mspauta.entity.AudienciaEntity;
 import br.gov.agu.nutec.mspauta.entity.PautaEntity;
 import br.gov.agu.nutec.mspauta.enums.Prioridade;
-import br.gov.agu.nutec.mspauta.enums.StatusAnaliseComparecimento;
+import br.gov.agu.nutec.mspauta.enums.AnaliseComparecimento;
 import br.gov.agu.nutec.mspauta.enums.Turno;
 import org.mapstruct.InjectionStrategy;
 import org.mapstruct.Mapper;
@@ -89,7 +89,7 @@ public interface PautaMapper {
      * @return Descrição do status de análise
      */
     @Named("mapStatusAnalise")
-    default String mapStatusAnalise(StatusAnaliseComparecimento status) {
+    default String mapStatusAnalise(AnaliseComparecimento status) {
         if (status == null) {
             return null;
         }

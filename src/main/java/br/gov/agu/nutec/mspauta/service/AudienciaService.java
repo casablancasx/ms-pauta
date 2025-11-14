@@ -12,12 +12,11 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-import static br.gov.agu.nutec.mspauta.enums.StatusAnaliseComparecimento.ANALISE_PENDENTE;
-import static br.gov.agu.nutec.mspauta.enums.StatusCadastro.PENDENTE;
+import static br.gov.agu.nutec.mspauta.enums.AnaliseComparecimento.ANALISE_PENDENTE;
+import static br.gov.agu.nutec.mspauta.enums.StatusCadastroTarefa.PENDENTE;
 
 @Service
 @RequiredArgsConstructor
@@ -63,7 +62,8 @@ public class AudienciaService {
                             PENDENTE,
                             pauta,
                             PENDENTE,
-                            ANALISE_PENDENTE
+                            ANALISE_PENDENTE,
+                            a.tipoContestacao()
                     );
                 })
                 .toList();

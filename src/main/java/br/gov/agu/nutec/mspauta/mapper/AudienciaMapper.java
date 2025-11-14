@@ -3,7 +3,7 @@ package br.gov.agu.nutec.mspauta.mapper;
 import br.gov.agu.nutec.mspauta.dto.response.AudienciaResponseDTO;
 import br.gov.agu.nutec.mspauta.entity.AdvogadoEntity;
 import br.gov.agu.nutec.mspauta.entity.AudienciaEntity;
-import br.gov.agu.nutec.mspauta.enums.StatusAnaliseComparecimento;
+import br.gov.agu.nutec.mspauta.enums.AnaliseComparecimento;
 import org.mapstruct.InjectionStrategy;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
@@ -41,7 +41,7 @@ public interface AudienciaMapper {
     }
 
     @Named("mapStatusAnalise")
-    default String mapStatusAnalise(StatusAnaliseComparecimento status) {
+    default String mapStatusAnalise(AnaliseComparecimento status) {
         return status != null ? status.getDescricao() : null;
     }
 }

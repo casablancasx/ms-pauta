@@ -3,6 +3,7 @@ package br.gov.agu.nutec.mspauta.dto;
 
 
 import br.gov.agu.nutec.mspauta.enums.Prioridade;
+import br.gov.agu.nutec.mspauta.enums.TipoContestacao;
 import br.gov.agu.nutec.mspauta.enums.Turno;
 import br.gov.agu.nutec.mspauta.enums.Uf;
 
@@ -25,7 +26,8 @@ public record AudienciaDTO(
         String tipo,
         String situacao,
         Prioridade prioridade,
-        Uf uf
+        Uf uf,
+        TipoContestacao tipoContestacao
 ) {
 
 }

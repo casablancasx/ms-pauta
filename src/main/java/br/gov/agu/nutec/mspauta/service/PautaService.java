@@ -3,14 +3,12 @@ package br.gov.agu.nutec.mspauta.service;
 import br.gov.agu.nutec.mspauta.dto.AudienciaDTO;
 import br.gov.agu.nutec.mspauta.dto.PageResponse;
 import br.gov.agu.nutec.mspauta.dto.PautaDTO;
-import br.gov.agu.nutec.mspauta.dto.request.PautaUpdateDTO;
 import br.gov.agu.nutec.mspauta.dto.response.PautaResponseDTO;
 import br.gov.agu.nutec.mspauta.entity.OrgaoJulgadorEntity;
 import br.gov.agu.nutec.mspauta.entity.PautaEntity;
 import br.gov.agu.nutec.mspauta.entity.SalaEntity;
 import br.gov.agu.nutec.mspauta.entity.UfEntity;
-import br.gov.agu.nutec.mspauta.enums.StatusAnaliseComparecimento;
-import br.gov.agu.nutec.mspauta.enums.Uf;
+import br.gov.agu.nutec.mspauta.enums.AnaliseComparecimento;
 import br.gov.agu.nutec.mspauta.mapper.PautaMapper;
 import br.gov.agu.nutec.mspauta.repository.PautaRepository;
 import lombok.RequiredArgsConstructor;
@@ -25,7 +23,6 @@ import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-import static br.gov.agu.nutec.mspauta.enums.StatusAnaliseComparecimento.ANALISE_PENDENTE;
 import static br.gov.agu.nutec.mspauta.enums.StatusEscalaPauta.ESCALA_PENDENTE;
 
 @Slf4j
@@ -73,7 +70,6 @@ public class PautaService {
                             chave.turno(),
                             ESCALA_PENDENTE,
                             ESCALA_PENDENTE,
-                            ANALISE_PENDENTE,
                             orgaoJulgador,
                             sala)
             );
@@ -83,7 +79,7 @@ public class PautaService {
     }
 
 
-    public PageResponse<PautaResponseDTO> listarPautas(int page, int size, StatusAnaliseComparecimento statusAnalise, Integer ufId, Long orgaoJulgadorId, Long salaId, Integer assuntoId, Boolean prioritarias, Long avaliadorId) {
+    public PageResponse<PautaResponseDTO> listarPautas(int page, int size, AnaliseComparecimento statusAnalise, Integer ufId, Long orgaoJulgadorId, Long salaId, Integer assuntoId, Boolean prioritarias, Long avaliadorId) {
         Pageable pageable = PageRequest.of(page, size);
 
         var pautasPage = pautaRepository.listarPautas(statusAnalise, ufId, orgaoJulgadorId, salaId,assuntoId,prioritarias, avaliadorId, pageable);
@@ -95,15 +91,7 @@ public class PautaService {
         return new PageResponse<>(dtos, page, size, pautasPage.getTotalElements(), pautasPage.getNumber());
     }
 
-    public PautaResponseDTO atualizarComparecimento(PautaUpdateDTO request) {
-        PautaEntity pauta = pautaRepository.findById(request.pautaId()).orElseThrow(
-                () -> new RuntimeException("Pauta id não encontrada")
-        );
 
-        pauta.setAnaliseComparecimento(request.analiseComparecimento());
-        pauta = pautaRepository.save(pauta);
-        return pautaMapper.toResponseDTO(pauta);
-    }
 
     public void deletarPauta(long id) {
         pautaRepository.deleteById(id);

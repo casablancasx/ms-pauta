@@ -1,7 +1,6 @@
 package br.gov.agu.nutec.mspauta.entity;
 
 
-import br.gov.agu.nutec.mspauta.enums.StatusAnaliseComparecimento;
 import br.gov.agu.nutec.mspauta.enums.StatusEscalaPauta;
 import br.gov.agu.nutec.mspauta.enums.Turno;
 import jakarta.persistence.*;
@@ -38,10 +37,6 @@ public class PautaEntity {
     @Enumerated(EnumType.STRING)
     private StatusEscalaPauta statusEscalaPautista;
 
-    @Column(name = "status_analise_comparecimento")
-    @Enumerated(EnumType.STRING)
-    private StatusAnaliseComparecimento analiseComparecimento;
-
     @ManyToOne
     @JoinColumn(name = "orgao_julgador_id")
     private OrgaoJulgadorEntity orgaoJulgador;
@@ -57,12 +52,11 @@ public class PautaEntity {
     @OneToOne(mappedBy = "pauta", fetch = FetchType.LAZY)
     private EscalaEntity escala;
 
-    public PautaEntity(LocalDate data, Turno turno, StatusEscalaPauta statusEscalaPauta, StatusEscalaPauta statusEscalaPauta1, StatusAnaliseComparecimento statusAnaliseComparecimento, OrgaoJulgadorEntity orgaoJulgador, SalaEntity sala) {
+    public PautaEntity(LocalDate data, Turno turno, StatusEscalaPauta statusEscalaPauta, StatusEscalaPauta statusEscalaPauta1, OrgaoJulgadorEntity orgaoJulgador, SalaEntity sala) {
         this.data = data;
         this.turno = turno;
         this.statusEscalaAvaliador = statusEscalaPauta;
         this.statusEscalaPautista = statusEscalaPauta1;
-        this.analiseComparecimento = statusAnaliseComparecimento;
         this.orgaoJulgador = orgaoJulgador;
         this.sala = sala;
     }

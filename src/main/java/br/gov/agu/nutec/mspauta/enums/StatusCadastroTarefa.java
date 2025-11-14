@@ -1,6 +1,6 @@
 package br.gov.agu.nutec.mspauta.enums;
 
-public enum StatusCadastro {
+public enum StatusCadastroTarefa {
     PENDENTE,
     SUCESSO,
     ERRO

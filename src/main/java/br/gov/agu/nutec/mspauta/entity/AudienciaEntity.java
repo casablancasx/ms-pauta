@@ -1,7 +1,8 @@
 package br.gov.agu.nutec.mspauta.entity;
 
-import br.gov.agu.nutec.mspauta.enums.StatusAnaliseComparecimento;
-import br.gov.agu.nutec.mspauta.enums.StatusCadastro;
+import br.gov.agu.nutec.mspauta.enums.AnaliseComparecimento;
+import br.gov.agu.nutec.mspauta.enums.StatusCadastroTarefa;
+import br.gov.agu.nutec.mspauta.enums.TipoContestacao;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -51,29 +52,34 @@ public class AudienciaEntity {
     private PautaEntity pauta;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "status_cadastro_avaliador")
-    private StatusCadastro statusCadastroAvaliador;
+    @Column(name = "status_cadastro_tarefa_avaliador")
+    private StatusCadastroTarefa statusCadastroTarefaAvaliador;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "status_cadastro_pautista")
-    private StatusCadastro statusCadastroPautista;
+    @Column(name = "status_cadastro_tarefa_pautista")
+    private StatusCadastroTarefa statusCadastroTarefaPautista;
 
-    private StatusAnaliseComparecimento analiseComparecimento;
+    private AnaliseComparecimento analiseComparecimento;
+
+    @Enumerated(EnumType.STRING)
+    private TipoContestacao tipoContestacao;
 
     @Column(columnDefinition = "TEXT")
     private String analise;
 
-    public AudienciaEntity(String numeroProcesso, ClasseJudicialEntity classeJudicial, AssuntoEntity assunto, String nomeParte, String horario, List<AdvogadoEntity> advogados, boolean prioridade, StatusCadastro statusCadastroAvaliador, PautaEntity pauta, StatusCadastro statusCadastroPautista, StatusAnaliseComparecimento analiseComparecimento) {
-        this.numeroProcesso = numeroProcesso;
+
+    public AudienciaEntity(String cnj, ClasseJudicialEntity classeJudicial, AssuntoEntity assunto, String s, String hora, List<AdvogadoEntity> advogados, boolean prioridade, StatusCadastroTarefa statusCadastroTarefa, PautaEntity pauta, StatusCadastroTarefa statusCadastroTarefa1, AnaliseComparecimento analiseComparecimento, TipoContestacao tipoContestacao) {
+        this.numeroProcesso = cnj;
         this.classeJudicial = classeJudicial;
         this.assunto = assunto;
-        this.nomeParte = nomeParte;
-        this.horario = horario;
+        this.nomeParte = s;
+        this.horario = hora;
         this.advogados = advogados;
         this.isPrioritario = prioridade;
-        this.statusCadastroAvaliador = statusCadastroAvaliador;
+        this.statusCadastroTarefaAvaliador = statusCadastroTarefa;
         this.pauta = pauta;
-        this.statusCadastroPautista = statusCadastroPautista;
+        this.statusCadastroTarefaPautista = statusCadastroTarefa1;
         this.analiseComparecimento = analiseComparecimento;
+        this.tipoContestacao = tipoContestacao;
     }
 }
