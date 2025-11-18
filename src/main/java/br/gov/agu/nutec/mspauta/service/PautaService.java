@@ -79,17 +79,17 @@ public class PautaService {
     }
 
 
-    public PageResponse<PautaResponseDTO> listarPautas(int page, int size, AnaliseComparecimento statusAnalise, Integer ufId, Long orgaoJulgadorId, Long salaId, Integer assuntoId, Boolean prioritarias, Long avaliadorId) {
-        Pageable pageable = PageRequest.of(page, size);
-
-        var pautasPage = pautaRepository.listarPautas(statusAnalise, ufId, orgaoJulgadorId, salaId,assuntoId,prioritarias, avaliadorId, pageable);
-
-        List<PautaResponseDTO> dtos = pautasPage.getContent().stream()
-                .map(pautaMapper::toResponseDTO)
-                .toList();
-
-        return new PageResponse<>(dtos, page, size, pautasPage.getTotalElements(), pautasPage.getNumber());
-    }
+//    public PageResponse<PautaResponseDTO> listarPautas(int page, int size, AnaliseComparecimento statusAnalise, Integer ufId, Long orgaoJulgadorId, Long salaId, Integer assuntoId, Boolean prioritarias, Long avaliadorId) {
+//        Pageable pageable = PageRequest.of(page, size);
+//
+//        //var pautasPage = pautaRepository.listarPautas(statusAnalise, ufId, orgaoJulgadorId, salaId,assuntoId,prioritarias, avaliadorId, pageable);
+//
+//        List<PautaResponseDTO> dtos = pautasPage.getContent().stream()
+//                .map(pautaMapper::toResponseDTO)
+//                .toList();
+//
+//        return new PageResponse<>(dtos, page, size, pautasPage.getTotalElements(), pautasPage.getNumber());
+//    }
 
 
 

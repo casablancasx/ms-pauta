@@ -18,22 +18,22 @@ public class PautaController {
 
 
 
-    @GetMapping
-    public ResponseEntity<PageResponse<PautaResponseDTO>> listarPautas(
-            @RequestParam int page,
-            @RequestParam int size,
-            @RequestParam(required = false) AnaliseComparecimento resultadoAnalise,
-            @RequestParam(required = false) Integer ufId,
-            @RequestParam(required = false) Long orgaoJulgadorId,
-            @RequestParam(required = false) Long salaId,
-            @RequestParam(required = false) Integer assuntoId,
-            @RequestParam(required = false) Boolean prioritarias,
-            @RequestParam(required = false) Long avaliadorId
-    ){
-
-        var response = pautaService.listarPautas(page, size, resultadoAnalise, ufId, orgaoJulgadorId, salaId, assuntoId, prioritarias, avaliadorId);
-        return ResponseEntity.ok(response);
-    }
+//    @GetMapping
+//    public ResponseEntity<PageResponse<PautaResponseDTO>> listarPautas(
+//            @RequestParam int page,
+//            @RequestParam int size,
+//            @RequestParam(required = false) AnaliseComparecimento resultadoAnalise,
+//            @RequestParam(required = false) Integer ufId,
+//            @RequestParam(required = false) Long orgaoJulgadorId,
+//            @RequestParam(required = false) Long salaId,
+//            @RequestParam(required = false) Integer assuntoId,
+//            @RequestParam(required = false) Boolean prioritarias,
+//            @RequestParam(required = false) Long avaliadorId
+//    ){
+//
+//        var response = pautaService.listarPautas(page, size, resultadoAnalise, ufId, orgaoJulgadorId, salaId, assuntoId, prioritarias, avaliadorId);
+//        return ResponseEntity.ok(response);
+//    }
 
     @GetMapping("/{id}")
     public ResponseEntity<PautaResponseDTO> bucarPautaPorId(@PathVariable Long id){

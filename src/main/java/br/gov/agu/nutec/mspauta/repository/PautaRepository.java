@@ -20,15 +20,14 @@ public interface PautaRepository extends JpaRepository<PautaEntity, Long> {
     LEFT JOIN pauta.orgaoJulgador orgaoJulgador
     LEFT JOIN orgaoJulgador.uf uf
     LEFT JOIN pauta.sala sala
-    WHERE (:statusAnalise IS NULL OR pauta.analiseComparecimento = :statusAnalise)
-      AND (:ufId IS NULL OR uf.ufId = :ufId)
+    WHERE (:ufId IS NULL OR uf.ufId = :ufId)
       AND (:orgaoJulgadorId IS NULL OR orgaoJulgador.orgaoJulgadorId = :orgaoJulgadorId)
       AND (:salaId IS NULL OR sala.salaId = :salaId)
       AND (:assuntoId IS NULL OR assunto.assuntoId = :assuntoId)
       AND (:prioritarias IS NULL OR audiencia.isPrioritario = :prioritarias)
       AND (:avaliadorId IS NULL OR escala.avaliador.sapiensId = :avaliadorId)
     """)
-    Page<PautaEntity> listarPautas(@Param("statusAnalise") AnaliseComparecimento statusAnalise,
+    Page<PautaEntity> listarPautas(
                                    @Param("ufId")  Integer ufId,
                                    @Param("orgaoJulgadorId") Long orgaoJulgadorId,
                                    @Param("salaId") Long salaId,
