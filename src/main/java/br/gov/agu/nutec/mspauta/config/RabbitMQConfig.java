@@ -22,8 +22,8 @@ public class RabbitMQConfig {
     }
 
     @Bean
-    public FanoutExchange fanoutExchange(){
-        return ExchangeBuilder.fanoutExchange(exchangeAudienciaPendente).build();
+    public DirectExchange directExchange(){
+        return ExchangeBuilder.directExchange(exchangeAudienciaPendente).build();
     }
 
     @Bean
@@ -32,7 +32,7 @@ public class RabbitMQConfig {
     }
 
     @Bean
-    public Binding bindingFilaAudienciaPendenteMsPace(FanoutExchange fanoutExchange, Queue filaAudienciaPendenteMsPauta){
-        return BindingBuilder.bind(filaAudienciaPendenteMsPauta).to(fanoutExchange);
+    public Binding bindingFilaAudienciaPendenteMsPace(DirectExchange directExchange, Queue filaAudienciaPendenteMsPauta){
+        return BindingBuilder.bind(filaAudienciaPendenteMsPauta).to(directExchange).with("audiencia.pendente");
     }
 }
