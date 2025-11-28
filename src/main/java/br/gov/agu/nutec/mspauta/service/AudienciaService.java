@@ -1,12 +1,15 @@
 package br.gov.agu.nutec.mspauta.service;
 
 import br.gov.agu.nutec.mspauta.dto.AudienciaDTO;
+import br.gov.agu.nutec.mspauta.dto.PageResponse;
 import br.gov.agu.nutec.mspauta.dto.request.AudienciaUpdateDTO;
 import br.gov.agu.nutec.mspauta.dto.response.AudienciaResponseDTO;
 import br.gov.agu.nutec.mspauta.entity.*;
 import br.gov.agu.nutec.mspauta.repository.AudienciaRepository;
 import br.gov.agu.nutec.mspauta.mapper.AudienciaMapper;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -89,5 +92,19 @@ public class AudienciaService {
         audienciaOptional = audienciaRepository.save(audienciaOptional);
         return audienciaMapper.toResponse(audienciaOptional);
 
+    }
+
+    @Transactional(readOnly = true)
+    public List<AudienciaResponseDTO> buscarAudienciasPorOrgaoJulgadorId(Long orgaoJulgadorId) {
+        List<AudienciaEntity> audienciaEntities = audienciaRepository.findAudienciasPorOrgaoJulgadorId(orgaoJulgadorId);
+        return audienciaEntities.stream().map(audienciaMapper::toResponse).toList();
+    }
+
+    @Transactional(readOnly = true)
+    public PageResponse<AudienciaResponseDTO> buscarAudiencias(int page, int size, Long orgaoJulgadorId,  String numeroProcesso) {
+        Pageable pageable = PageRequest.of(page, size);
+        List<AudienciaEntity> audienciaEntities = audienciaRepository.buscarAudienciaPorFiltro(orgaoJulgadorId,numeroProcesso,pageable);
+        List<AudienciaResponseDTO> audiencias = audienciaEntities.stream().map(audienciaMapper::toResponse).toList();
+        return new PageResponse<>(audiencias, page, size, audienciaEntities.size(), pageable.getPageNumber());
     }
 }

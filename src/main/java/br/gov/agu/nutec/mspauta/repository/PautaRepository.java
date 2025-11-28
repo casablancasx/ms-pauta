@@ -26,6 +26,7 @@ public interface PautaRepository extends JpaRepository<PautaEntity, Long> {
       AND (:assuntoId IS NULL OR assunto.assuntoId = :assuntoId)
       AND (:prioritarias IS NULL OR audiencia.isPrioritario = :prioritarias)
       AND (:avaliadorId IS NULL OR escala.avaliador.sapiensId = :avaliadorId)
+      AND (:pautistaId IS NULL OR escala.avaliador.sapiensId = :pautistaId)
     """)
     Page<PautaEntity> listarPautas(
                                    @Param("ufId")  Integer ufId,
@@ -34,6 +35,7 @@ public interface PautaRepository extends JpaRepository<PautaEntity, Long> {
                                    @Param("assuntoId") Integer assuntoId,
                                    @Param("prioritarias") Boolean prioritarias,
                                    @Param("avaliadorId") Long avaliadorId,
+                                   @Param("pautistaId") Long pautistaId,
                                    Pageable pageable);
 
 }

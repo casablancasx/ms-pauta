@@ -3,6 +3,7 @@ package br.gov.agu.nutec.mspauta.service;
 import br.gov.agu.nutec.mspauta.dto.AudienciaDTO;
 import br.gov.agu.nutec.mspauta.dto.PageResponse;
 import br.gov.agu.nutec.mspauta.dto.PautaDTO;
+import br.gov.agu.nutec.mspauta.dto.response.PautaDetalhadaDTO;
 import br.gov.agu.nutec.mspauta.dto.response.PautaResponseDTO;
 import br.gov.agu.nutec.mspauta.entity.OrgaoJulgadorEntity;
 import br.gov.agu.nutec.mspauta.entity.PautaEntity;
@@ -79,17 +80,18 @@ public class PautaService {
     }
 
 
-//    public PageResponse<PautaResponseDTO> listarPautas(int page, int size, AnaliseComparecimento statusAnalise, Integer ufId, Long orgaoJulgadorId, Long salaId, Integer assuntoId, Boolean prioritarias, Long avaliadorId) {
-//        Pageable pageable = PageRequest.of(page, size);
-//
-//        //var pautasPage = pautaRepository.listarPautas(statusAnalise, ufId, orgaoJulgadorId, salaId,assuntoId,prioritarias, avaliadorId, pageable);
-//
-//        List<PautaResponseDTO> dtos = pautasPage.getContent().stream()
-//                .map(pautaMapper::toResponseDTO)
-//                .toList();
-//
-//        return new PageResponse<>(dtos, page, size, pautasPage.getTotalElements(), pautasPage.getNumber());
-//    }
+    @Transactional(readOnly = true)
+    public PageResponse<PautaResponseDTO> listarPautas(int page, int size, Integer ufId, Long orgaoJulgadorId, Long salaId, Integer assuntoId, Boolean prioritarias, Long avaliadorId, Long pautistaId) {
+        Pageable pageable = PageRequest.of(page, size);
+
+        var pautasPage = pautaRepository.listarPautas(ufId, orgaoJulgadorId, salaId,assuntoId,prioritarias, avaliadorId,pautistaId, pageable);
+
+        List<PautaResponseDTO> dtos = pautasPage.getContent().stream()
+                .map(pautaMapper::mapToResponse)
+                .toList();
+
+        return new PageResponse<>(dtos, page, size, pautasPage.getTotalElements(), pautasPage.getNumber());
+    }
 
 
 
@@ -97,10 +99,11 @@ public class PautaService {
         pautaRepository.deleteById(id);
     }
 
-    public PautaResponseDTO buscarPautaPorId(Long id) {
+    @Transactional(readOnly = true)
+    public PautaDetalhadaDTO buscarPautaPorId(Long id) {
         PautaEntity pauta = pautaRepository.findById(id).orElseThrow(
                 () -> new RuntimeException("Pauta id não encontrada")
         );
-        return pautaMapper.toResponseDTO(pauta);
+        return pautaMapper.mapToResponseComAudiencias(pauta);
     }
 }

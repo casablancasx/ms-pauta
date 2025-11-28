@@ -20,13 +20,10 @@ public class EscalaEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long escalaId;
 
-    // Em ms-escala existe uma restrição de unicidade para pauta_id em tb_escalas,
-    // logo aqui podemos modelar como OneToOne para facilitar a navegação a partir de Pauta.
     @OneToOne
     @JoinColumn(name = "pauta_id")
     private PautaEntity pauta;
 
-    // Relacionamentos com entidades locais para suportar navegação
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "pautista_id", referencedColumnName = "sapiens_id")
     private PautistaEntity pautista;

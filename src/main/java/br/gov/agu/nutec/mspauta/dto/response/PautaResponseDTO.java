@@ -29,8 +29,5 @@ public class PautaResponseDTO {
 
     private String pautista;
 
-    private String analiseComparecimento;
-
-    private List<AudienciaResponseDTO> audiencias;
-
+    private String avaliador;
 }

@@ -59,6 +59,7 @@ public class AudienciaEntity {
     @Column(name = "status_cadastro_tarefa_pautista")
     private StatusCadastroTarefa statusCadastroTarefaPautista;
 
+    @Enumerated(EnumType.STRING)
     private AnaliseComparecimento analiseComparecimento;
 
     @Enumerated(EnumType.STRING)
