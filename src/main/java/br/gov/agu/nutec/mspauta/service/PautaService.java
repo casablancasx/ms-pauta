@@ -5,13 +5,12 @@ import br.gov.agu.nutec.mspauta.dto.PageResponse;
 import br.gov.agu.nutec.mspauta.dto.PautaDTO;
 import br.gov.agu.nutec.mspauta.dto.response.PautaDetalhadaDTO;
 import br.gov.agu.nutec.mspauta.dto.response.PautaResponseDTO;
-import br.gov.agu.nutec.mspauta.entity.OrgaoJulgadorEntity;
-import br.gov.agu.nutec.mspauta.entity.PautaEntity;
-import br.gov.agu.nutec.mspauta.entity.SalaEntity;
-import br.gov.agu.nutec.mspauta.entity.UfEntity;
+import br.gov.agu.nutec.mspauta.entity.*;
 import br.gov.agu.nutec.mspauta.enums.AnaliseComparecimento;
 import br.gov.agu.nutec.mspauta.mapper.PautaMapper;
 import br.gov.agu.nutec.mspauta.repository.PautaRepository;
+import br.gov.agu.nutec.mspauta.repository.UsuarioRepository;
+import br.gov.agu.nutec.mspauta.util.TokenUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.PageRequest;
@@ -21,6 +20,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -39,6 +39,7 @@ public class PautaService {
     private final UfService ufService;
 
     private final PautaMapper pautaMapper;
+    private final UsuarioRepository usuarioRepository;
 
 
     private Map<PautaDTO, List<AudienciaDTO>> agruparAudienciasPorPauta(Set<AudienciaDTO> audiencias) {
@@ -81,16 +82,40 @@ public class PautaService {
 
 
     @Transactional(readOnly = true)
-    public PageResponse<PautaResponseDTO> listarPautas(int page, int size, Integer ufId, Long orgaoJulgadorId, Long salaId, Integer assuntoId, Boolean prioritarias, Long avaliadorId, Long pautistaId) {
+    public PageResponse<PautaResponseDTO> listarPautas(int page, int size, Integer ufId, Long orgaoJulgadorId, Long salaId, Integer assuntoId, Boolean prioritarias, Long avaliadorId, Long pautistaId, String token) {
         Pageable pageable = PageRequest.of(page, size);
 
-        var pautasPage = pautaRepository.listarPautas(ufId, orgaoJulgadorId, salaId,assuntoId,prioritarias, avaliadorId,pautistaId, pageable);
+        UsuarioEntity user = usuarioRepository.findById(TokenUtil.getSapiensIdFromToken(token)).orElseThrow(() -> new RuntimeException());
 
-        List<PautaResponseDTO> dtos = pautasPage.getContent().stream()
-                .map(pautaMapper::mapToResponse)
-                .toList();
+        if (user.getRole().name().equals("ADMIN")){
 
-        return new PageResponse<>(dtos, page, size, pautasPage.getTotalElements(), pautasPage.getNumber());
+            var pautasPage = pautaRepository.listarPautas(ufId, orgaoJulgadorId, salaId,assuntoId,prioritarias, avaliadorId,pautistaId, pageable);
+
+            List<PautaResponseDTO> dtos = pautasPage.getContent().stream()
+                    .map(pautaMapper::mapToResponse)
+                    .toList();
+
+            return new PageResponse<>(dtos, page, size, pautasPage.getTotalElements(), pautasPage.getNumber());
+
+        }else {
+
+            var pautasPage =pautaRepository.listarMinhasPautas(
+                    user.getSapiensId(),
+                    ufId,
+                    orgaoJulgadorId,
+                    salaId,
+                    assuntoId,
+                    prioritarias,
+                    pageable
+            );
+
+            List<PautaResponseDTO> dtos = pautasPage.getContent().stream()
+                    .map(pautaMapper::mapToResponse)
+                    .toList();
+
+            return new PageResponse<>(dtos, page, size, pautasPage.getTotalElements(), pautasPage.getNumber());
+        }
+
     }
 
 

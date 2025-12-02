@@ -6,6 +6,7 @@ import br.gov.agu.nutec.mspauta.mapper.AssuntoMapper;
 import br.gov.agu.nutec.mspauta.repository.AssuntoRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -17,8 +18,14 @@ public class AssuntoService {
     private final AssuntoMapper mapper;
 
 
+    @Transactional
     public AssuntoEntity buscarAssunto(String assunto){
-        return repository.findAssuntoEntityByNomeIgnoreCase(assunto).orElseGet(() -> criarNovoAssunto(assunto));
+        if (assunto == null || assunto.trim().isEmpty()) {
+            return null;
+        }
+        String assuntoFormatado = assunto.trim();
+        return repository.findAssuntoEntityByNomeIgnoreCase(assuntoFormatado)
+                .orElseGet(() -> criarNovoAssunto(assuntoFormatado));
     }
 
     private AssuntoEntity criarNovoAssunto(String assunto){

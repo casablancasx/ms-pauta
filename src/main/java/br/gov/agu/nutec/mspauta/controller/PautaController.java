@@ -29,10 +29,11 @@ public class PautaController {
             @RequestParam(required = false) Integer assuntoId,
             @RequestParam(required = false) Boolean prioritarias,
             @RequestParam(required = false) Long avaliadorId,
-            @RequestParam(required = false) Long pautistaId
+            @RequestParam(required = false) Long pautistaId,
+            @RequestHeader("Authorization") String token
     ){
-
-        var response = pautaService.listarPautas(page, size,  ufId, orgaoJulgadorId, salaId, assuntoId, prioritarias, avaliadorId, pautistaId);
+        String tokenHeader = token.replace("Bearer ", "");
+        var response = pautaService.listarPautas(page, size,  ufId, orgaoJulgadorId, salaId, assuntoId, prioritarias, avaliadorId, pautistaId,tokenHeader);
         return ResponseEntity.ok(response);
     }
 

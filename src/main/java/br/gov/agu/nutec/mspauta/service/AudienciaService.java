@@ -40,9 +40,7 @@ public class AudienciaService {
         Map<String, AdvogadoEntity> advogadosPorNome = advogadoService.ensureAdvogadosByNames(nomesAdvogados);
 
 
-        ClasseJudicialEntity classeJudicial = classeJudicialService.buscarClassePorNome(audiencias.getFirst().classeJudicial());
 
-        AssuntoEntity assunto = assuntoService.buscarAssunto(audiencias.getFirst().assunto());
 
         List<AudienciaEntity> entidades = audiencias.stream()
                 .map(a -> {
@@ -50,9 +48,14 @@ public class AudienciaService {
                             .map(advogadosPorNome::get)
                             .toList();
 
+                    AssuntoEntity assunto = assuntoService.buscarAssunto(a.assunto());
+
                     // Define a prioridade da audiência com base nos advogados ou no DTO
                     boolean prioridade = advogados.stream()
                             .anyMatch(AdvogadoEntity::isPrioritario);
+
+                            
+                    ClasseJudicialEntity classeJudicial = classeJudicialService.buscarClassePorNome(a.classeJudicial());
 
                     return new AudienciaEntity(
                             a.cnj(),
@@ -74,7 +77,7 @@ public class AudienciaService {
         audienciaRepository.saveAll(entidades);
     }
 
-
+    @Transactional
     public AudienciaResponseDTO atualizaAudiencia(AudienciaUpdateDTO audiencia) {
 
         AudienciaEntity audienciaOptional = audienciaRepository.findById(audiencia.audienciaId()).orElseThrow(
@@ -103,8 +106,8 @@ public class AudienciaService {
     @Transactional(readOnly = true)
     public PageResponse<AudienciaResponseDTO> buscarAudiencias(int page, int size, Long orgaoJulgadorId,  String numeroProcesso) {
         Pageable pageable = PageRequest.of(page, size);
-        List<AudienciaEntity> audienciaEntities = audienciaRepository.buscarAudienciaPorFiltro(orgaoJulgadorId,numeroProcesso,pageable);
-        List<AudienciaResponseDTO> audiencias = audienciaEntities.stream().map(audienciaMapper::toResponse).toList();
-        return new PageResponse<>(audiencias, page, size, audienciaEntities.size(), pageable.getPageNumber());
+        var audienciasPage = audienciaRepository.buscarAudienciaPorFiltro(orgaoJulgadorId,numeroProcesso,pageable);
+        List<AudienciaResponseDTO> audiencias = audienciasPage.getContent().stream().map(audienciaMapper::toResponse).toList();
+        return new PageResponse<>(audiencias, page, size, audienciasPage.getTotalElements(), audienciasPage.getTotalPages());
     }
 }

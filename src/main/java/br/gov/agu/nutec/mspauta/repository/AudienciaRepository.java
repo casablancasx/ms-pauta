@@ -17,5 +17,5 @@ public interface AudienciaRepository extends JpaRepository<AudienciaEntity, Long
     @Query("SELECT a FROM AudienciaEntity a WHERE " +
             "(:orgaoJulgadorId IS NULL OR a.pauta.orgaoJulgador.orgaoJulgadorId = :orgaoJulgadorId) AND " +
             "(:numeroProcesso IS NULL OR a.numeroProcesso LIKE %:numeroProcesso%)")
-    List<AudienciaEntity> buscarAudienciaPorFiltro(Long orgaoJulgadorId, String numeroProcesso, Pageable pageable);
+    org.springframework.data.domain.Page<AudienciaEntity> buscarAudienciaPorFiltro(Long orgaoJulgadorId, String numeroProcesso, Pageable pageable);
 }

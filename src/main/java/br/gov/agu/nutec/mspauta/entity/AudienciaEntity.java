@@ -25,11 +25,11 @@ public class AudienciaEntity {
 
     private String numeroProcesso;
 
-    @ManyToOne
+    @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @JoinColumn(name = "classe_judicial_id")
     private ClasseJudicialEntity classeJudicial;
 
-    @ManyToOne
+    @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @JoinColumn(name = "assunto_id")
     private AssuntoEntity assunto;
 
@@ -59,7 +59,7 @@ public class AudienciaEntity {
     @Column(name = "status_cadastro_tarefa_pautista")
     private StatusCadastroTarefa statusCadastroTarefaPautista;
 
-    @Enumerated(EnumType.STRING)
+    @Column(name = "analise_comparecimento")
     private AnaliseComparecimento analiseComparecimento;
 
     @Enumerated(EnumType.STRING)

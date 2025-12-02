@@ -4,6 +4,7 @@ import br.gov.agu.nutec.mspauta.dto.response.AudienciaResponseDTO;
 import br.gov.agu.nutec.mspauta.entity.AdvogadoEntity;
 import br.gov.agu.nutec.mspauta.entity.AudienciaEntity;
 import br.gov.agu.nutec.mspauta.enums.AnaliseComparecimento;
+import br.gov.agu.nutec.mspauta.enums.TipoContestacao;
 import org.mapstruct.InjectionStrategy;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
@@ -27,6 +28,7 @@ public interface AudienciaMapper {
     @Mapping(source = "prioritario", target = "prioritaria")
     @Mapping(source = "analiseComparecimento", target = "statusComparecimento", qualifiedByName = "mapStatusAnalise")
     @Mapping(source = "analise", target = "analise")
+    @Mapping(source = "tipoContestacao", target = "tipoContestacao", qualifiedByName = "mapTipoContestacao")
     AudienciaResponseDTO toResponse(AudienciaEntity entity);
 
     @Named("mapAdvogadosToNames")
@@ -43,5 +45,10 @@ public interface AudienciaMapper {
     @Named("mapStatusAnalise")
     default String mapStatusAnalise(AnaliseComparecimento status) {
         return status != null ? status.getDescricao() : null;
+    }
+
+    @Named("mapTipoContestacao")
+    default String mapTipoContestacao(TipoContestacao tipo) {
+        return tipo != null ? tipo.getDescricao() : null;
     }
 }

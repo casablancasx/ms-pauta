@@ -33,4 +33,6 @@ public class AudienciaResponseDTO {
 
     private String analise;
 
+    private String tipoContestacao;
+
 }

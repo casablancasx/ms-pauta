@@ -5,9 +5,9 @@ import br.gov.agu.nutec.mspauta.entity.OrgaoJulgadorEntity;
 import br.gov.agu.nutec.mspauta.entity.SalaEntity;
 import br.gov.agu.nutec.mspauta.mapper.SalaMapper;
 import br.gov.agu.nutec.mspauta.repository.SalaRepository;
-import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 

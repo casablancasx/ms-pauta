@@ -5,9 +5,9 @@ import br.gov.agu.nutec.mspauta.entity.UfEntity;
 import br.gov.agu.nutec.mspauta.enums.Uf;
 import br.gov.agu.nutec.mspauta.mapper.UfMapper;
 import br.gov.agu.nutec.mspauta.repository.UfRepostiory;
-import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 

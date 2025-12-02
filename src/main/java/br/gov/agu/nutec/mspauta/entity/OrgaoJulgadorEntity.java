@@ -4,14 +4,14 @@ import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.springframework.stereotype.Service;
+import lombok.Setter;
 
 import java.util.List;
 
 @Entity
 @Table(name = "tb_orgaos_julgadores")
 @Getter
-@Service
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 public class OrgaoJulgadorEntity {
@@ -23,7 +23,7 @@ public class OrgaoJulgadorEntity {
 
     private String nome;
 
-    @ManyToOne
+    @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @JoinColumn(name = "uf_id")
     private UfEntity uf;
 
