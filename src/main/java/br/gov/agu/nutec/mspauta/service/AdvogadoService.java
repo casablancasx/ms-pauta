@@ -65,14 +65,14 @@ public class AdvogadoService {
         return new AdvogadoResponseDTO(advogado.getAdvogadoId(), advogado.getNome(), ufs, advogado.isPrioritario());
     }
 
-    public PageResponse<AdvogadoResponseDTO> listarAdvogados(int page, int size, boolean prioritarios) {
+    @Transactional(readOnly = true)
+    public PageResponse<AdvogadoResponseDTO> listarAdvogados(int page, int size, String nome){
 
 
         var pageable = org.springframework.data.domain.PageRequest.of(page, size);
 
-        var advogadosPage = prioritarios
-                ? advogadoRepository.findByIsPrioritario(true, pageable)
-                : advogadoRepository.findAll(pageable);
+        var advogadosPage = advogadoRepository.findByIsPrioritario(true,nome, pageable);
+
 
         var dtos = advogadosPage.getContent().stream()
                 .map(a -> new AdvogadoResponseDTO(

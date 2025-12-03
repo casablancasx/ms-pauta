@@ -23,13 +23,13 @@ public class AdvogadoController {
 
 
     @GetMapping
-    public ResponseEntity<PageResponse<AdvogadoResponseDTO>> listarPautas(
+    public ResponseEntity<PageResponse<AdvogadoResponseDTO>> listaAdvogadosPrioritarios(
             @RequestParam int page,
             @RequestParam int size,
-            @RequestParam boolean prioritarios
+            @RequestParam(required = false) String nome
     ){
 
-        var response = service.listarAdvogados(page,size,prioritarios);
+        var response = service.listarAdvogados(page,size, nome);
         return ResponseEntity.ok(response);
     }
 
